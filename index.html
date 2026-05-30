@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Argo</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <meta name="description" content="Argo — Cap sur votre toison d'or. Suivi du patrimoine, budget, investissements et simulation immobilière." />
+    <meta name="author" content="Argo" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#020617" />
+    <!-- iOS PWA : plein écran sans barre de navigation -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Argo" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+  </head>
+  <body>
+    <!-- ── Écran de démarrage Argo ── -->
+    <div id="splashScreen" aria-hidden="true">
+
+      <!-- Ciel étoilé -->
+      <div id="splashStars" aria-hidden="true"></div>
+
+      <!-- Particules dorées — la Toison d'Or -->
+      <div id="splashParticles" aria-hidden="true"></div>
+
+      <!-- Lueur de l'horizon -->
+      <div class="splash-horizon-glow" aria-hidden="true"></div>
+      <div class="splash-horizon-line" aria-hidden="true"></div>
+
+      <!-- L'Argo qui vogue -->
+      <div class="splash-ship" aria-hidden="true">
+        <div class="splash-ship-inner">
+          <svg viewBox="0 0 148 68" width="148" height="68" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Coque -->
+            <path d="M 6 48 Q 74 60 142 48 L 130 58 Q 74 66 18 58 Z" fill="#fbbf24"/>
+            <!-- Sillage -->
+            <path d="M 12 56 Q 74 63 136 56" fill="none" stroke="#67e8f9" stroke-width="1.5" opacity="0.4"/>
+            <!-- Mât -->
+            <line x1="64" y1="6" x2="64" y2="49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+            <!-- Grande voile -->
+            <path d="M 65 9 C 102 17 100 38 94 48 L 65 48 Z" fill="#fde68a" opacity="0.9"/>
+            <!-- Petite voile -->
+            <path d="M 63 12 C 28 22 30 40 34 48 L 63 48 Z" fill="#fcd34d" opacity="0.75"/>
+            <!-- Oriflamme -->
+            <path d="M 64 6 L 82 13 L 64 20 Z" fill="#f59e0b"/>
+            <!-- Reflet sur la coque -->
+            <path d="M 30 50 Q 74 56 118 50" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+          </svg>
+          <!-- Reflet dans l'eau — dans inner pour tanguer avec le bateau -->
+          <div class="splash-ship-reflection" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- Vagues océan -->
+      <div class="splash-ocean" aria-hidden="true">
+        <svg class="splash-wave splash-wave-1" viewBox="0 0 2000 100" preserveAspectRatio="none">
+          <path d="M0,50 C250,90 750,10 1000,50 C1250,90 1750,10 2000,50 L2000,100 L0,100 Z" fill="rgba(14,165,233,0.12)"/>
+        </svg>
+        <svg class="splash-wave splash-wave-2" viewBox="0 0 2000 100" preserveAspectRatio="none">
+          <path d="M0,60 C250,20 750,100 1000,60 C1250,20 1750,100 2000,60 L2000,100 L0,100 Z" fill="rgba(14,165,233,0.07)"/>
+        </svg>
+        <svg class="splash-wave splash-wave-3" viewBox="0 0 2000 70" preserveAspectRatio="none">
+          <path d="M0,35 C166,62 334,8 500,35 C666,62 834,8 1000,35 C1166,62 1334,8 1500,35 C1666,62 1834,8 2000,35 L2000,70 L0,70 Z" fill="rgba(56,189,248,0.18)"/>
+        </svg>
+      </div>
+
+      <!-- Contenu central -->
+      <div class="splash-content">
+        <img src="icon.svg" alt="" class="splash-icon" width="96" height="96" />
+        <h1 class="splash-title">Argo</h1>
+        <p class="splash-sub">Cap sur votre toison d'or.</p>
+      </div>
+
+    </div>
+
+    <!-- ── Modal profils ── -->
+    <div id="profileModal" class="profile-modal" role="dialog" aria-modal="true" aria-label="Gestion des profils" hidden>
+      <div class="profile-modal-inner">
+        <div class="profile-modal-header">
+          <h2><i class="fa-solid fa-users"></i> Mes profils</h2>
+          <button id="closeProfileModalBtn" class="icon-btn" aria-label="Fermer"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="profileListContainer" class="profile-list"></div>
+        <div class="profile-add-form">
+          <input type="text" id="newProfileEmoji" placeholder="👤" maxlength="4" />
+          <input type="text" id="newProfileName" placeholder="Nom du profil" />
+          <button type="button" id="addProfileBtn" class="action-btn"><i class="fa-solid fa-plus"></i> Créer</button>
+        </div>
+        <p class="profile-modal-note">Chaque profil a ses propres données indépendantes.</p>
+      </div>
+    </div>
+    <div id="profileModalOverlay" class="profile-modal-overlay" hidden></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Argo</p>
+          <h1>Tableau de bord</h1>
+        </div>
+        <div class="topbar-right">
+          <p class="subtitle">Cap sur votre toison d’or.</p>
+          <button type="button" id="profilePickerBtn" class="profile-picker-btn" aria-label="Changer de profil">
+            <span id="activeProfileEmoji">👤</span>
+            <span id="activeProfileName">Mon profil</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+        </div>
+      </header>
+
+      <div id="pageToast" class="success-toast" role="status" aria-live="polite"></div>
+
+      <nav class="section-nav" aria-label="Navigation principale">
+        <button type="button" class="nav-link active" data-section="home" aria-current="page">Accueil</button>
+        <button type="button" class="nav-link" data-section="charges">Mon Budget</button>
+        <button type="button" class="nav-link" data-section="investments">Investissements</button>
+        <button type="button" class="nav-link" data-section="mortgage">Immobilier</button>
+      </nav>
+
+      <!-- Recherche rapide -->
+      <div class="quick-search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="quickSearchInput" placeholder="Rechercher une dépense, crypto, action…" autocomplete="off" />
+        <div id="quickSearchResults" class="search-results-dropdown" style="display:none"></div>
+      </div>
+
+      <div class="global-control-bar" aria-label="Barre de contrôle globale">
+        <button type="button" id="exportBackupButton" class="global-control-btn global-control-btn-export">
+          <i class="fa-solid fa-file-download"></i>
+          <span>Exporter sauvegarde</span>
+        </button>
+        <button type="button" id="importBackupButton" class="global-control-btn global-control-btn-import">
+          <i class="fa-solid fa-file-upload"></i>
+          <span>Importer sauvegarde</span>
+        </button>
+        <button type="button" id="themeToggleBtn" class="global-control-btn global-control-btn-theme">
+          <i class="fa-solid fa-sun"></i>
+          <span>Mode clair</span>
+        </button>
+        <button type="button" id="notifPermBtn" class="global-control-btn global-control-btn-notif">
+          <i class="fa-solid fa-bell"></i>
+          <span>Notifications</span>
+        </button>
+        <input type="file" id="importBackupInput" accept="application/json,.json" hidden />
+      </div>
+
+      <main>
+        <section id="home-section" class="page-section is-visible">
+
+          <!-- ── Hero bar condensé ── -->
+          <div class="home-hero-bar" id="homeHeroBar">
+            <div class="home-hero-item">
+              <p class="home-hero-kicker">Patrimoine</p>
+              <p class="home-hero-val" id="heroPatrimony">0 €</p>
+            </div>
+            <div class="home-hero-sep"></div>
+            <div class="home-hero-item">
+              <p class="home-hero-kicker">Reste à vivre</p>
+              <p class="home-hero-val home-hero-remaining" id="heroRemaining">0 €</p>
+            </div>
+            <div class="home-hero-sep"></div>
+            <div class="home-hero-item">
+              <p class="home-hero-kicker">Score santé</p>
+              <button type="button" id="heroScore" class="hero-score-mini" aria-expanded="false" aria-controls="healthScoreDetail">—</button>
+            </div>
+          </div>
+
+          <!-- ── Score santé — panneau de détail ── -->
+          <div id="healthScoreDetail" class="health-score-detail" hidden>
+            <div class="health-score-detail-grid" id="healthScoreDetailGrid"></div>
+            <ul class="health-tips" id="healthTipsList"></ul>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel form-panel">
+              <div class="panel-heading">
+                <h2>Mon mois</h2>
+                <p>Renseignez vos chiffres — tout se recalcule en temps réel.</p>
+              </div>
+
+              <!-- ── 1. Compte courant — ancre réelle ── -->
+              <div class="checking-block">
+                <div class="checking-header">
+                  <i class="fa-solid fa-building-columns"></i>
+                  <div>
+                    <h3>Compte courant</h3>
+                    <p>Solde réel de votre banque (peut être négatif)</p>
+                  </div>
+                </div>
+                <label class="checking-label">
+                  <span>Solde actuel (€)</span>
+                  <input type="number" id="checkingAccountBalance" step="0.01" value="0" inputmode="decimal" placeholder="Ex : 1 250" />
+                </label>
+                <p class="checking-summary" id="checkingSummary">Solde compte courant : 0,00 €</p>
+              </div>
+
+              <!-- ── 2. Revenus du mois ── -->
+              <form id="finance-form" class="finance-form">
+                <label>
+                  <span>Salaire</span>
+                  <input type="number" id="salary" min="0" step="0.01" value="0" inputmode="decimal" />
+                </label>
+
+                <label>
+                  <span>Primes</span>
+                  <input type="number" id="bonus" min="0" step="0.01" value="0" inputmode="decimal" />
+                </label>
+              </form>
+
+              <!-- ── 3. Rentrées exceptionnelles ── -->
+              <div class="income-extras-block">
+                <div class="income-extras-header">
+                  <div class="income-extras-title-row">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <div>
+                      <h3>Rentrées exceptionnelles</h3>
+                      <p>Vente, remboursement, cadeau… s'ajoute aux revenus du mois.</p>
+                    </div>
+                  </div>
+                  <button type="button" id="addPonctualBtn" class="action-btn section-add-btn">+ Ajouter</button>
+                </div>
+                <div id="ponctualsList" class="dynamic-list"></div>
+                <p class="income-extras-total" id="ponctualsTotal">Total rentrées : 0,00 €</p>
+              </div>
+
+              <!-- ── 4. Virement automatique ── -->
+              <div class="auto-transfer-block">
+                <div class="auto-transfer-header">
+                  <i class="fa-solid fa-rotate"></i>
+                  <div>
+                    <h3>Virement auto mensuel</h3>
+                    <p>Déduit automatiquement du reste à vivre</p>
+                  </div>
+                </div>
+
+                <div class="transfer-preset-grid" role="group" aria-label="Objectif d'épargne mensuelle">
+                  <label class="transfer-preset-pill">
+                    <input type="radio" name="transferPreset" value="0.10" />
+                    <span>10% <em>Survie</em></span>
+                  </label>
+                  <label class="transfer-preset-pill">
+                    <input type="radio" name="transferPreset" value="0.20" />
+                    <span>20% <em>Standard</em></span>
+                  </label>
+                  <label class="transfer-preset-pill">
+                    <input type="radio" name="transferPreset" value="0.30" />
+                    <span>30% <em>Accélérateur</em></span>
+                  </label>
+                  <label class="transfer-preset-pill">
+                    <input type="radio" name="transferPreset" value="custom" />
+                    <span>Autre</span>
+                  </label>
+                </div>
+
+                <label class="auto-transfer-label">
+                  <span>Montant (€)</span>
+                  <input type="number" id="manualTransferAmount" min="0" step="0.01" value="0" inputmode="decimal" placeholder="Ex : 200" />
+                </label>
+                <p class="auto-transfer-summary" id="manualTransferSummary">Virement retenu ce mois : 0 €</p>
+              </div>
+
+              <!-- ── 5. Simulation d'achat ── -->
+              <div class="simulation-block">
+                <div class="simulation-header">
+                  <i class="fa-solid fa-calculator"></i>
+                  <div>
+                    <h3>Et si je dépense…</h3>
+                    <p>Simulez un achat sans modifier vos données.</p>
+                  </div>
+                </div>
+                <label class="simulation-label">
+                  <span>Montant à dépenser (€)</span>
+                  <input type="number" id="simulationAmount" min="0" step="0.01" inputmode="decimal" placeholder="Ex : 150" />
+                </label>
+                <p class="simulation-result" id="simulationResult"></p>
+              </div>
+
+            </section>
+
+            <section class="panel results-panel">
+              <div class="panel-heading results-panel-header">
+                <div>
+                  <h2>Récapitulatif</h2>
+                  <p>Chiffres clés du mois en cours.</p>
+                </div>
+                <button type="button" id="closeMonthButton" class="action-btn">Clôturer le mois</button>
+              </div>
+
+              <div class="summary-hero">
+                <p class="summary-hero-kicker">Patrimoine Total</p>
+                <h2 id="totalPatrimony">0 €</h2>
+                <p id="investmentBreakdown" class="investment-breakdown">PEA : 0 € | Crypto : 0 € | Natixis : 0 € | Carrefour : 0 €</p>
+                <div id="healthScoreBadge" class="health-score-badge"></div>
+              </div>
+
+              <div class="results-grid">
+                <article class="metric-card accent-income">
+                  <span>Revenu total</span>
+                  <strong id="totalIncome">0 €</strong>
+                  <small id="incomeDelta" class="metric-delta"></small>
+                </article>
+
+                <article class="metric-card accent-obligations">
+                  <span>Total des obligations</span>
+                  <strong id="totalObligations">0 €</strong>
+                  <small id="obligationsDelta" class="metric-delta"></small>
+                </article>
+
+                <article class="metric-card accent-remaining">
+                  <span>Reste à vivre</span>
+                  <div class="remaining-value-row">
+                    <strong id="remainingIncome">0 €</strong>
+                    <i id="remainingIncomeWarningIcon" class="fa-solid fa-triangle-exclamation remaining-warning-icon" hidden aria-hidden="true"></i>
+                  </div>
+                </article>
+
+                <article class="metric-card accent-saving">
+                  <span>Épargne potentielle</span>
+                  <strong id="savingCapacity">0 €</strong>
+                  <small class="metric-card-hint">15% du reste à vivre</small>
+                </article>
+
+                <article class="metric-card accent-daily" id="dailyBudgetCard">
+                  <span>Budget / jour</span>
+                  <strong id="dailyBudget">—</strong>
+                  <small id="dailyBudgetSub" class="metric-card-sub">jours restants ce mois</small>
+                </article>
+
+                <article class="metric-card accent-security">
+                  <span>Matelas de sécurité</span>
+                  <strong id="securityCushion">— mois</strong>
+                  <p class="metric-card-hint" id="securityCushionStatus"></p>
+                </article>
+
+                <article class="metric-card savings-rate-card">
+                  <div class="savings-rate-header">
+                    <span>Indicateur de taux d’épargne</span>
+                    <span class="savings-rate-caption">vs mois précédent</span>
+                  </div>
+
+                  <div class="savings-rate-gauge-wrap">
+                    <div class="savings-rate-gauge" id="savingsRateGauge">
+                      <div class="savings-rate-gauge-core">
+                        <strong id="savingsRatePercent">0%</strong>
+                        <span id="savingsRateStatus">À renforcer</span>
+                      </div>
+                    </div>
+
+                    <div class="savings-rate-copy">
+                      <p id="savingsRateDetail">Revenus : 0 € • Épargne estimée : 0 €</p>
+                      <p class="savings-rate-trend-line">
+                        <i id="savingsRateTrendIcon" class="fa-solid fa-minus"></i>
+                        <span id="savingsRateTrend">Aucune donnée du mois précédent.</span>
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <!-- RATIO D’ENDETTEMENT -->
+              <div class="debt-ratio-module">
+                <div class="debt-ratio-header-row">
+                  <div>
+                    <p class="debt-ratio-kicker">ANALYSE FINANCIÈRE</p>
+                    <h3 class="debt-ratio-title"><i class="fa-solid fa-scale-balanced"></i> Ratio d’endettement</h3>
+                  </div>
+                  <div class="debt-ratio-badge-wrap">
+                    <span class="debt-ratio-value" id="debtRatioValue">—</span>
+                    <span class="debt-ratio-badge" id="debtRatioBadge">—</span>
+                  </div>
+                </div>
+                <div class="debt-ratio-bar-track">
+                  <div class="debt-ratio-bar-fill" id="debtRatioBar"></div>
+                  <span class="debt-ratio-threshold-mark" title="Seuil bancaire 33%"></span>
+                </div>
+                <p class="debt-ratio-label" id="debtRatioLabel">Renseignez vos revenus et charges fixes pour calculer le ratio.</p>
+              </div>
+
+              <!-- ── Prévision fin de mois ── -->
+              <div class="forecast-inline-panel">
+                <div class="forecast-inline-header">
+                  <i class="fa-solid fa-calendar-check"></i>
+                  <h3>Prévision fin de mois</h3>
+                </div>
+                <div id="forecastEndOfMonth" class="forecast-grid"><p class="dynamic-empty">Chargement…</p></div>
+              </div>
+
+              <div class="home-insights-grid">
+                <article class="panel chart-card">
+                  <div class="panel-heading">
+                    <h2>Répartition du patrimoine</h2>
+                    <p>Visualisez la part de votre PEA, crypto, Natixis et Carrefour dans votre patrimoine global.</p>
+                  </div>
+                  <div class="chart-wrap">
+                    <canvas id="chargesChart" aria-label="Répartition du patrimoine" role="img"></canvas>
+                  </div>
+                </article>
+
+                <article class="panel chart-card">
+                  <div class="panel-heading">
+                    <h2>Évolution du reste à vivre</h2>
+                    <p>Historique basé sur vos archives mensuelles.</p>
+                  </div>
+                  <div class="chart-wrap">
+                    <canvas id="remainingChart" aria-label="Évolution du reste à vivre" role="img"></canvas>
+                  </div>
+                </article>
+              </div>
+
+              <section class="panel">
+                <div class="panel-heading">
+                  <h2><i class="fa-solid fa-fire"></i> Rendement réel vs inflation</h2>
+                  <p>Ce que rapporte vraiment ton épargne après inflation.</p>
+                </div>
+                <div class="inflation-alert-grid">
+                  <label><span>Taux inflation actuel (%)</span>
+                    <input type="number" id="currentInflationRate" step="0.1" value="2.5" inputmode="decimal"/></label>
+                  <label><span>Taux livret Carrefour (%)</span>
+                    <input type="number" id="livretRateDisplay" step="0.1" value="0" inputmode="decimal" readonly/></label>
+                </div>
+                <div class="real-return-display" id="realReturnDisplay"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-heading">
+                  <h2><i class="fa-solid fa-scale-balanced"></i> Répartition patrimoniale</h2>
+                  <p>Épargne sécurisée (livrets, banque) vs investissements de croissance (PEA, Crypto, Natixis).</p>
+                </div>
+                <div class="patrimony-split">
+                  <div class="patrimony-split-labels">
+                    <span id="splitSecureLabel">Sécurisé — 0 €  (0%)</span>
+                    <span id="splitGrowthLabel">Croissance — 0 € (0%)</span>
+                  </div>
+                  <div class="patrimony-split-bar">
+                    <div class="patrimony-split-secure" id="splitSecureBar"></div>
+                    <div class="patrimony-split-growth" id="splitGrowthBar"></div>
+                  </div>
+                  <p class="patrimony-split-advice" id="splitAdvice"></p>
+                </div>
+              </section>
+
+              <div class="archive-panel">
+                <div class="archive-panel-header">
+                  <div>
+                    <h2>Archives Mensuelles</h2>
+                    <p>Consultez vos clôtures de mois et vos performances globales.</p>
+                  </div>
+                  <p class="archive-status" id="archiveStatus">Aucune archive pour le moment.</p>
+                </div>
+
+                <div class="panel chart-card" style="margin-top: 1rem;">
+                  <div class="panel-heading">
+                    <h2>Évolution du Net Worth</h2>
+                    <p>Suivez l’évolution de votre patrimoine total au fil des mois archivés.</p>
+                  </div>
+                  <div class="chart-wrap">
+                    <canvas id="archiveNetWorthChart" aria-label="Évolution du Net Worth" role="img"></canvas>
+                  </div>
+                </div>
+
+                <div class="archive-table-wrap">
+                  <table class="archive-table">
+                    <thead>
+                      <tr>
+                        <th>Mois</th>
+                        <th>Total revenus</th>
+                        <th>Total obligations</th>
+                        <th>Épargne réalisée</th>
+                        <th>Reste final</th>
+                      </tr>
+                    </thead>
+                    <tbody id="archiveTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- CHARGES À VENIR — 7 prochains jours -->
+          <section class="panel upcoming-charges-panel">
+            <div class="panel-heading">
+              <h2><i class="fa-solid fa-clock"></i> Prélèvements à venir</h2>
+              <p>Charges fixes prévues dans les 7 prochains jours.</p>
+            </div>
+            <div id="upcomingChargesList" class="upcoming-charges-list"></div>
+          </section>
+
+          <!-- OBJECTIFS FINANCIERS — suivi de progression -->
+          <section class="panel goals-panel">
+            <div class="panel-heading">
+              <h2><i class="fa-solid fa-bullseye"></i> Mes Objectifs</h2>
+              <p>Créez des objectifs financiers et suivez votre progression vers chaque cible.</p>
+            </div>
+            <div class="goals-form">
+              <label class="goals-form-field goals-form-icon-field">
+                <span>Icône</span>
+                <input type="text" id="goalIcon" placeholder="🎯" maxlength="4" />
+              </label>
+              <label class="goals-form-field">
+                <span>Nom de l'objectif</span>
+                <input type="text" id="goalName" placeholder="Ex : Vacances, voiture…" />
+              </label>
+              <label class="goals-form-field">
+                <span>Montant cible (€)</span>
+                <input type="number" id="goalTarget" min="0" step="0.01" placeholder="Ex : 5 000" inputmode="decimal" />
+              </label>
+              <button type="button" id="addGoalButton" class="action-btn goals-add-btn">
+                <i class="fa-solid fa-plus"></i>
+                <span>Ajouter</span>
+              </button>
+            </div>
+            <div id="goalsContainer" class="goals-container"><p class="dynamic-empty">Aucun objectif défini.</p></div>
+          </section>
+
+          <!-- GRAPHIQUE 6 MOIS — historique récent -->
+          <section class="panel chart-card">
+            <div class="panel-heading">
+              <h2><i class="fa-solid fa-chart-bar"></i> Évolution sur 6 mois</h2>
+              <p>Revenus, dépenses et épargne mois par mois sur les 6 derniers mois archivés.</p>
+            </div>
+            <div class="chart-wrap" style="height:300px">
+              <canvas id="sixMonthChart" aria-label="Évolution 6 mois" role="img"></canvas>
+            </div>
+          </section>
+
+          <!-- DASHBOARD DE VIE -->
+          <section class="panel life-dashboard">
+            <div class="panel-heading">
+              <h2><i class="fa-solid fa-heart"></i> Dashboard de vie</h2>
+              <p>Tes objectifs au-delà des chiffres — pour garder le cap sur l'essentiel.</p>
+            </div>
+            <div class="life-goals-form">
+              <input type="text" id="lifeGoalEmoji" placeholder="🏠" maxlength="4"/>
+              <input type="text" id="lifeGoalName" placeholder="Nom du projet"/>
+              <input type="text" id="lifeGoalDeadline" placeholder="Échéance (ex: 2026)"/>
+              <input type="number" id="lifeGoalProgress"
+                min="0" max="100" placeholder="% avancement" inputmode="numeric"/>
+              <button type="button" id="addLifeGoalBtn" class="action-btn">+ Ajouter</button>
+            </div>
+            <div id="lifeGoalsContainer" class="life-goals-container"></div>
+          </section>
+
+        </section>
+
+        <section id="charges-section" class="page-section">
+          <section class="panel form-panel">
+            <div class="panel-heading section-heading-row">
+              <div>
+                <h2>Mon Budget</h2>
+                <p>Charges fixes, dépenses et courses — tout votre budget au même endroit.</p>
+              </div>
+              <button type="button" class="reset-section-btn" data-reset-section="charges">
+                <i class="fa-solid fa-trash-alt"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+
+            <!-- 0. GRAPHIQUE RÉPARTITION DÉPENSES -->
+            <div class="panel budget-cat-chart-panel" style="margin-bottom:1.2rem;">
+              <div class="panel-heading">
+                <h2><i class="fa-solid fa-chart-pie"></i> Répartition des dépenses</h2>
+                <p>Charges fixes · Dépenses perso · Courses</p>
+              </div>
+              <div class="budget-donut-wrap">
+                <div class="chart-wrap" style="height:200px;max-width:220px;">
+                  <canvas id="budgetDonutChart" aria-label="Répartition des dépenses" role="img"></canvas>
+                </div>
+                <div class="budget-donut-legend" id="budgetDonutLegend"></div>
+              </div>
+            </div>
+
+            <!-- 0b. CATÉGORIES PERSONNALISÉES -->
+            <div class="panel budget-cat-panel" style="margin-bottom:1.2rem;">
+              <div class="panel-heading">
+                <h2><i class="fa-solid fa-tags"></i> Catégories de budget</h2>
+                <p>Créez vos catégories avec enveloppes budgétaires.</p>
+              </div>
+              <div class="budget-cat-form">
+                <label class="budget-cat-form-field goals-form-icon-field"><span>Icône</span>
+                  <input type="text" id="catIcon" placeholder="📦" maxlength="4" /></label>
+                <label class="budget-cat-form-field"><span>Nom</span>
+                  <input type="text" id="catName" placeholder="Ex : Restaurants" /></label>
+                <label class="budget-cat-form-field"><span>Enveloppe (€)</span>
+                  <input type="number" id="catBudget" min="0" step="1" placeholder="Ex : 200" inputmode="decimal" /></label>
+                <button type="button" id="addCatButton" class="action-btn goals-add-btn"><i class="fa-solid fa-plus"></i> Ajouter</button>
+              </div>
+              <div id="budgetCategoriesContainer" class="goals-container" style="margin-top:1rem;"></div>
+            </div>
+
+            <!-- 0c. ALERTES BUDGET — seuils en un coup d'œil -->
+            <div class="budget-alerts-panel">
+              <h3 class="budget-alerts-title"><i class="fa-solid fa-bell"></i> Seuils d'alerte budget</h3>
+              <div class="budget-alerts-grid">
+                <div class="budget-alert-item">
+                  <label><span>Seuil Charges fixes (€)</span>
+                    <input type="number" id="budget-limit-fixedCharges" min="0" step="1" placeholder="Ex : 1500" inputmode="decimal" />
+                  </label>
+                  <span id="budget-alert-status-fixedCharges" class="budget-alert-status">Aucun seuil</span>
+                </div>
+                <div class="budget-alert-item">
+                  <label><span>Seuil Dépenses perso (€)</span>
+                    <input type="number" id="budget-limit-personalExpenses" min="0" step="1" placeholder="Ex : 400" inputmode="decimal" />
+                  </label>
+                  <span id="budget-alert-status-personalExpenses" class="budget-alert-status">Aucun seuil</span>
+                </div>
+                <div class="budget-alert-item">
+                  <label><span>Seuil Courses (€)</span>
+                    <input type="number" id="budget-limit-groceryExpenses" min="0" step="1" placeholder="Ex : 300" inputmode="decimal" />
+                  </label>
+                  <span id="budget-alert-status-groceryExpenses" class="budget-alert-status">Aucun seuil</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 1. SAISIE DES CHARGES — données primaires -->
+            <div class="dynamic-sections-stack">
+              <section class="dynamic-section">
+                <div class="dynamic-section-header">
+                  <div>
+                    <h3>Charges fixes & abonnements</h3>
+                    <p>Loyer, électricité, Netflix, salle de sport, assurance, etc.</p>
+                  </div>
+                  <div class="dynamic-section-actions">
+                    <button type="button" class="reset-section-btn" data-reset-specific-section="chargesFixesData">
+                      <i class="fa-solid fa-trash-alt"></i>
+                      <span>Reset</span>
+                    </button>
+                    <button type="button" class="action-btn section-add-btn" data-add-section="fixedCharges">+ Ajouter</button>
+                  </div>
+                </div>
+                <div class="dynamic-list" id="fixedChargesList"></div>
+              </section>
+
+              <section class="dynamic-section">
+                <div class="dynamic-section-header">
+                  <div>
+                    <h3>Dépenses personnelles</h3>
+                    <p>Transport, loisirs, santé, cadeaux et autres dépenses du quotidien.</p>
+                  </div>
+                  <div class="dynamic-section-actions">
+                    <button type="button" class="reset-section-btn" data-reset-specific-section="depensesPersoData">
+                      <i class="fa-solid fa-trash-alt"></i>
+                      <span>Reset</span>
+                    </button>
+                    <button type="button" class="action-btn section-add-btn" data-add-section="personalExpenses">+ Ajouter</button>
+                  </div>
+                </div>
+                <div class="dynamic-list" id="personalExpensesList"></div>
+              </section>
+
+              <section class="dynamic-section">
+                <div class="dynamic-section-header">
+                  <div>
+                    <h3>Dépenses courses</h3>
+                    <p>Alimentation, ménager, produits d’entretien et achats récurrents.</p>
+                  </div>
+                  <button type="button" class="action-btn section-add-btn" data-add-section="groceryExpenses">+ Ajouter</button>
+                </div>
+                <div class="dynamic-list" id="groceryExpensesList"></div>
+              </section>
+            </div>
+
+          </section>
+        </section>
+
+        <section id="investments-section" class="page-section">
+          <section class="asset-section">
+            <div class="panel-heading module-header section-heading-row">
+              <div>
+                <h2>INVESTISSEMENTS</h2>
+                <p>Suivez vos investissements, vos crypto-monnaies et votre position sur PEA.</p>
+              </div>
+              <button type="button" class="reset-section-btn" data-reset-section="investments">
+                <i class="fa-solid fa-trash-alt"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+
+            <div class="asset-grid">
+
+              <!-- 1. COMPTES BANCAIRES — liquidités du quotidien -->
+              <article class="asset-card asset-card-wide bank-accounts-card home-bank-card">
+                <div class="bank-header-row">
+                  <div>
+                    <p class="asset-kicker">BANQUE</p>
+                    <h3 class="module-title">GESTION DES COMPTES</h3>
+                    <p class="crypto-status">Ajoutez vos comptes bancaires, éditez leur solde et suivez les intérêts estimés.</p>
+                  </div>
+                  <button type="button" class="reset-section-btn" data-reset-section="bank">
+                    <i class="fa-solid fa-trash-alt"></i>
+                    <span>Reset</span>
+                  </button>
+                </div>
+
+                <div class="bank-accounts-form">
+                  <label>
+                    <span>Nom du compte</span>
+                    <input type="text" id="bankAccountName" placeholder="Ex : Compte courant" />
+                  </label>
+                  <label>
+                    <span>Taux d’intérêt annuel (%)</span>
+                    <input type="number" id="bankAccountRate" min="0" step="0.01" value="0" inputmode="decimal" placeholder="2.50" />
+                  </label>
+                  <label>
+                    <span>Solde actuel (€)</span>
+                    <input type="number" id="bankAccountBalance" min="0" step="0.01" value="0" inputmode="decimal" placeholder="1500" />
+                  </label>
+                  <button type="button" id="addBankAccountButton" class="action-btn">+ Ajouter un compte</button>
+                </div>
+
+                <div class="asset-table-wrap">
+                  <table class="asset-table">
+                    <thead>
+                      <tr>
+                        <th>Nom</th>
+                        <th>Solde</th>
+                        <th>Taux</th>
+                        <th>Intérêts estimés</th>
+                        <th>Supprimer</th>
+                      </tr>
+                    </thead>
+                    <tbody id="bankAccountsTableBody"></tbody>
+                  </table>
+                </div>
+
+                <div class="asset-metrics">
+                  <div>
+                    <span>Cumul total</span>
+                    <strong id="bankAccountsTotalValue">0 €</strong>
+                  </div>
+                </div>
+              </article>
+
+              <!-- 2. LIVRET CARREFOUR — épargne réglementée, suivi mensuel -->
+              <article class="asset-card asset-card-wide">
+                <div class="panel-heading section-heading-row">
+                  <div>
+                    <p class="asset-kicker">CARREFOUR BANQUE</p>
+                    <h3 class="module-title">LIVRET CARREFOUR</h3>
+                    <p class="crypto-status">Saisissez votre solde et votre taux annuel, puis notez l’évolution mensuelle du livret.</p>
+                  </div>
+                  <button type="button" class="reset-section-btn" data-reset-specific-section="livretCarrefourData">
+                    <i class="fa-solid fa-trash-alt"></i>
+                    <span>Reset</span>
+                  </button>
+                </div>
+
+                <div class="asset-field-grid">
+                  <label>
+                    <span>Solde du livret (€)</span>
+                    <input type="number" id="carrefourCurrentBalance" min="0" step="0.01" value="0" inputmode="decimal" />
+                  </label>
+
+                  <label>
+                    <span>Taux d’intérêt annuel (%)</span>
+                    <input type="number" id="carrefourInterest" min="0" step="0.01" value="0" inputmode="decimal" />
+                  </label>
+                </div>
+
+                <div class="pea-actions-toolbar">
+                  <p class="dynamic-empty">Ajoutez une entrée mensuelle avec la date et le solde observé.</p>
+                  <div class="crypto-add-controls">
+                    <input type="date" id="carrefourHistoryDate" />
+                    <input type="number" id="carrefourHistoryBalance" min="0" step="0.01" value="0" inputmode="decimal" placeholder="Solde du mois" />
+                    <button type="button" id="addCarrefourMonthButton" class="action-btn">+ Ajouter au suivi</button>
+                  </div>
+                </div>
+
+                <div class="asset-table-wrap">
+                  <table class="asset-table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Solde</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="carrefourHistoryBody"></tbody>
+                  </table>
+                </div>
+              </article>
+
+              <!-- 3. NATIXIS — placements gérés, valorisation moyen terme -->
+              <article class="asset-card asset-card-wide">
+                <div class="panel-heading section-heading-row">
+                  <div>
+                    <p class="asset-kicker">NATIXIS</p>
+                    <h3 class="module-title">PORTFOLIO NATIXIS</h3>
+                    <p class="crypto-status">Suivez vos placements Natixis et ajoutez leur valeur actuelle au patrimoine global.</p>
+                  </div>
+                  <button type="button" class="reset-section-btn" data-reset-specific-section="natixisData">
+                    <i class="fa-solid fa-trash-alt"></i>
+                    <span>Reset</span>
+                  </button>
+                </div>
+
+                <div class="pea-actions-toolbar">
+                  <p class="dynamic-empty">Ajoutez vos placements Natixis pour suivre leur valorisation.</p>
+                  <button type="button" id="addNatixisButton" class="action-btn">+ Ajouter une ligne</button>
+                </div>
+
+                <div class="asset-table-wrap">
+                  <table class="asset-table">
+                    <thead>
+                      <tr>
+                        <th>Nom du placement</th>
+                        <th>Capital versé</th>
+                        <th>Performance (%)</th>
+                        <th>Frais (%)</th>
+                        <th>Valeur actuelle</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="natixisTableBody"></tbody>
+                  </table>
+                </div>
+
+                <div class="asset-metrics">
+                  <div>
+                    <span>Total Natixis</span>
+                    <strong id="natixisTotalValue">0 €</strong>
+                  </div>
+                </div>
+              </article>
+
+              <!-- 4. PEA — portefeuille principal, performance active -->
+              <article class="asset-card asset-card-wide">
+                <div class="panel-heading section-heading-row">
+                  <div>
+                    <p class="asset-kicker">PEA</p>
+                    <h3 class="module-title">ACTIONS</h3>
+                    <p class="crypto-status">Suivez vos positions, votre prix de revient et votre valorisation en temps réel.</p>
+                  </div>
+                  <button type="button" class="reset-section-btn" data-reset-specific-section="peaData">
+                    <i class="fa-solid fa-trash-alt"></i>
+                    <span>Reset</span>
+                  </button>
+                </div>
+
+                <div class="pea-actions-toolbar">
+                  <p class="dynamic-empty">Ajoutez vos actions pour suivre votre portefeuille.</p>
+                  <button type="button" id="addPeaActionButton" class="action-btn">+ Ajouter une action</button>
+                </div>
+
+                <div class="pea-actions-list" id="peaActionsList"></div>
+
+                <div class="asset-metrics pea-summary-grid">
+                  <div>
+                    <span>Investissement total</span>
+                    <strong id="peaTotalInvested">0 €</strong>
+                  </div>
+                  <div>
+                    <span>Valeur actuelle totale</span>
+                    <strong id="peaTotalCurrentValue">0 €</strong>
+                  </div>
+                  <div>
+                    <span>Plus-value latente</span>
+                    <strong id="peaTotalGain">0 €</strong>
+                  </div>
+                  <div>
+                    <span>Performance globale</span>
+                    <strong id="peaTotalGainPercent">0 %</strong>
+                  </div>
+                </div>
+              </article>
+
+              <!-- 5. CRYPTO — actifs volatils, surveillance rapprochée -->
+              <article class="asset-card asset-card-wide">
+                <div class="panel-heading section-heading-row">
+                  <div>
+                    <p class="asset-kicker">CRYPTO</p>
+                    <h3 class="module-title">CRYPTO</h3>
+                    <p class="crypto-status" id="cryptoSyncStatus">Prix en cours de synchronisation…</p>
+                  </div>
+                  <button type="button" class="reset-section-btn" data-reset-specific-section="cryptoData">
+                    <i class="fa-solid fa-trash-alt"></i>
+                    <span>Reset</span>
+                  </button>
+                </div>
+
+                <div class="crypto-refresh-toolbar">
+                  <button type="button" id="marketRefreshButton" class="action-btn">
+                    <i class="fa-solid fa-sync-alt"></i>
+                    <span>Actualiser</span>
+                  </button>
+                  <p class="market-refresh-notice" id="marketRefreshNotice" aria-live="polite"></p>
+                </div>
+
+                <div class="crypto-add-row">
+                  <label>
+                    <span>Ajouter une crypto</span>
+                    <div class="crypto-add-controls">
+                      <input type="text" id="newCryptoSymbol" placeholder="Ex : bitcoin" maxlength="32" list="cryptoApiSuggestions" />
+                      <input type="number" id="newCryptoQuantity" min="0" step="0.001" value="0" inputmode="decimal" placeholder="Quantité" />
+                      <button type="button" id="addCryptoButton" class="action-btn">Ajouter</button>
+                    </div>
+                    <datalist id="cryptoApiSuggestions"></datalist>
+                  </label>
+                </div>
+
+                <div class="asset-table-wrap">
+                  <table class="asset-table">
+                    <thead>
+                      <tr>
+                        <th>Symbole</th>
+                        <th>Quantité</th>
+                        <th>Prix d’achat (€)</th>
+                        <th>Prix actuel (€)</th>
+                        <th>24h</th>
+                        <th>Valeur actuelle</th>
+                        <th>Gain / perte</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="cryptoTableBody"></tbody>
+                  </table>
+                </div>
+              </article>
+
+            </div>
+          </section>
+
+          <!-- SIMULATEUR FRAIS -->
+          <section class="panel">
+            <div class="panel-heading">
+              <h2><i class="fa-solid fa-percent"></i> Impact des frais sur 20 ans</h2>
+              <p>Ce que vous coûtent réellement vos frais de gestion.</p>
+            </div>
+            <div class="fees-simulator">
+              <div class="finance-form">
+                <label><span>Capital initial (€)</span>
+                  <input type="number" id="feesCapital" value="10000" inputmode="decimal"/></label>
+                <label><span>Rendement brut (%/an)</span>
+                  <input type="number" id="feesReturn" value="7" step="0.1" inputmode="decimal"/></label>
+                <label><span>Frais annuels (%)</span>
+                  <input type="number" id="feesRate" value="1.5" step="0.1" inputmode="decimal"/></label>
+                <label><span>Durée (ans)</span>
+                  <input type="number" id="feesDuration" value="20" inputmode="numeric"/></label>
+              </div>
+              <div class="fees-result" id="feesResult"></div>
+            </div>
+          </section>
+
+          <!-- SIMULATEUR ÉPARGNE COMPOUND -->
+          <section class="panel compound-panel">
+            <div class="panel-heading">
+              <h2><i class="fa-solid fa-seedling"></i> Simulateur d’épargne</h2>
+              <p>Projetez la croissance de votre capital avec les intérêts composés sur le long terme.</p>
+            </div>
+            <div class="compound-form">
+              <label class="compound-field">
+                <span>Versement mensuel (€)</span>
+                <input type="number" id="compoundMonthly" min="0" step="10" value="200" inputmode="decimal" placeholder="200" />
+              </label>
+              <label class="compound-field">
+                <span>Taux annuel (%)</span>
+                <input type="number" id="compoundRate" min="0" step="0.1" value="8" inputmode="decimal" placeholder="8" />
+              </label>
+              <label class="compound-field">
+                <span>Horizon (ans)</span>
+                <input type="number" id="compoundDuration" min="1" max="40" step="1" value="20" inputmode="numeric" placeholder="20" />
+              </label>
+            </div>
+            <div class="compound-milestones" id="compoundMilestones"></div>
+            <div class="chart-wrap" style="height:260px;margin-top:1rem">
+              <canvas id="compoundChart" aria-label="Simulation épargne composée" role="img"></canvas>
+            </div>
+          </section>
+
+
+        </section>
+
+        <section id="mortgage-section" class="page-section">
+          <section class="mortgage-section">
+            <div class="panel-heading section-heading-row">
+              <div>
+                <h2>Projet Immobilier</h2>
+                <p>Comparez rapidement les mensualités et le coût total du crédit pour plusieurs durées.</p>
+              </div>
+              <button type="button" class="reset-section-btn" data-reset-section="mortgage">
+                <i class="fa-solid fa-trash-alt"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+
+            <div class="mortgage-grid">
+              <label>
+                <span>Prix du bien (€)</span>
+                <input type="number" id="homePrice" min="0" step="0.01" value="0" inputmode="decimal" />
+              </label>
+
+              <label>
+                <span>Apport personnel (€)</span>
+                <input type="number" id="personalContribution" min="0" step="0.01" value="0" inputmode="decimal" />
+              </label>
+
+              <label>
+                <span>Montant à emprunter (€)</span>
+                <input type="number" id="loanAmount" min="0" step="0.01" value="0" inputmode="decimal" readonly aria-readonly="true" />
+              </label>
+
+              <label>
+                <span>Taux d'intérêt annuel (%)</span>
+                <input type="number" id="interestRate" min="0" step="0.01" value="0" inputmode="decimal" />
+              </label>
+
+              <label>
+                <span>Durée (ans)</span>
+                <input type="number" id="loanDuration" min="0" step="1" value="0" inputmode="numeric" />
+              </label>
+            </div>
+
+            <div class="mortgage-simulation-summary">
+              <article class="mortgage-summary-card">
+                <p>Montant à emprunter</p>
+                <strong id="borrowedAmountDisplay">0 €</strong>
+              </article>
+
+              <article class="mortgage-summary-card">
+                <p>Mensualité estimée</p>
+                <strong id="estimatedMonthlyPayment">0 €</strong>
+              </article>
+
+              <article class="mortgage-summary-card mortgage-gain-card">
+                <span class="mortgage-gain-badge"><i class="fa-solid fa-arrow-trend-up"></i> Impact</span>
+                <p>Gain mensuel vs 0 € d’apport</p>
+                <strong id="monthlyGainDisplay">0 €</strong>
+              </article>
+            </div>
+
+            <p class="mortgage-simulation-note">Calcul basé sur l’amortissement constant : M = P × (t/12) ÷ (1 − (1 + t/12)<sup>−n</sup>)</p>
+
+            <div class="mortgage-impact-box">
+              <div>
+                <p class="asset-kicker">SIMULATION D'APPORT</p>
+                <h3 class="module-title">IMPACT DE L'APPORT PERSONNEL</h3>
+                <p class="crypto-status">Comparez le gain mensuel obtenu avec un apport de 20 000 € ou 40 000 €.</p>
+              </div>
+
+              <div class="mortgage-table-wrap">
+                <table class="mortgage-table mortgage-impact-table">
+                  <thead>
+                    <tr>
+                      <th>Apport</th>
+                      <th>Mensualité</th>
+                      <th>Gain mensuel</th>
+                    </tr>
+                  </thead>
+                  <tbody id="mortgageImpactTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="mortgage-table-wrap">
+              <table class="mortgage-table">
+                <thead>
+                  <tr>
+                    <th>Durée</th>
+                    <th>Mensualité</th>
+                    <th>Coût total du crédit</th>
+                  </tr>
+                </thead>
+                <tbody id="mortgageTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <!-- ── Navigation mobile — barre de tabs fixe ── -->
+    <nav class="mobile-tab-bar" aria-label="Navigation par onglets">
+      <button type="button" class="tab-btn active" data-section="home">
+        <i class="fa-solid fa-house"></i>
+        <span>Accueil</span>
+      </button>
+      <button type="button" class="tab-btn" data-section="charges">
+        <i class="fa-solid fa-wallet"></i>
+        <span>Budget</span>
+      </button>
+      <button type="button" class="tab-btn" data-section="investments">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Invest.</span>
+      </button>
+      <button type="button" class="tab-btn" data-section="mortgage">
+        <i class="fa-solid fa-house-chimney"></i>
+        <span>Immo</span>
+      </button>
+    </nav>
+
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/budget.js"></script>
+    <script src="js/investments.js"></script>
+    <script src="js/mortgage.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/archives.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
