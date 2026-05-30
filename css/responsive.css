@@ -1,0 +1,196 @@
+﻿/* â•â• RESPONSIVE â•â• */
+
+@media (min-width: 1280px) {
+  .app-shell {
+    width: min(1400px, calc(100% - 2rem));
+    padding: 2.25rem 0 4rem;
+  }
+
+  /* Nav : boutons plus grands et espaces */
+  .section-nav {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .nav-link {
+    padding: 0.78rem 1.7rem;
+    font-size: 0.97rem;
+  }
+
+  /* Asset grid : gap plus genereux */
+  .asset-grid {
+    gap: 1.5rem;
+  }
+
+  /* Topbar : titre encore plus grand */
+  .topbar h1 {
+    font-size: clamp(2rem, 2.2vw + 0.8rem, 2.6rem);
+  }
+
+  /* Spacing global-control-bar */
+  .global-control-bar {
+    margin: 1rem 0 1.4rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .global-control-bar {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 0.6rem 0.9rem;
+    gap: 0.65rem;
+  }
+  .global-control-btn {
+    min-height: 2.8rem;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.88rem;
+    gap: 0.55rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .results-panel {
+    grid-column: span 2;
+  }
+
+  .results-grid,
+  .home-insights-grid,
+  .asset-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+
+@media (max-width: 768px) {
+  /* Layout gÃ©nÃ©ral */
+  .app-shell { padding: 1rem 0 5rem; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .panel { padding: 1rem; }
+
+  /* Header */
+  .topbar { flex-direction: column; gap: 0.3rem; }
+  .topbar h1 { font-size: clamp(1.3rem, 5vw, 1.7rem); }
+  .subtitle, .eyebrow { font-size: 0.78rem; }
+
+  /* Nav desktop masquÃ©e â€” tab bar mobile prend le relais */
+  .section-nav { display: none; }
+  .nav-link { min-height: 48px; font-size: 0.88rem; text-align: center; padding: 0.7rem 0.4rem; }
+
+  /* Barre sauvegarde */
+  .global-control-bar { grid-template-columns: 1fr 1fr; }
+  .global-control-btn { min-height: 48px; font-size: 0.82rem; }
+
+  /* Metric cards */
+  .results-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .metric-card { padding: 0.9rem; min-height: 85px; }
+  .metric-card span { font-size: 0.76rem; }
+  .metric-card strong { font-size: 1.25rem; }
+  .summary-hero h2 { font-size: clamp(1.7rem, 6vw, 2.2rem); }
+  .investment-breakdown { font-size: 0.73rem; }
+
+  /* Inputs â€” 16px minimum Ã©vite le zoom iOS */
+  input, select, textarea {
+    min-height: 52px !important;
+    font-size: 16px !important;
+  }
+
+  /* Formulaires */
+  .finance-form label,
+  .dynamic-entry,
+  .treasury-form,
+  .bank-accounts-form,
+  .mortgage-grid,
+  .asset-field-grid,
+  .crypto-add-controls,
+  .goals-form { grid-template-columns: 1fr; }
+
+  /* Boutons */
+  .action-btn { min-height: 48px; }
+  .goals-add-btn,
+  .budget-cat-add-btn,
+  .section-add-btn { width: 100%; }
+  .reset-section-btn { min-height: 44px; min-width: 44px; }
+
+  /* Tableaux â€” scroll horizontal */
+  .asset-table-wrap,
+  .mortgage-table-wrap,
+  .archive-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .asset-table,
+  .mortgage-table,
+  .archive-table { min-width: 480px; }
+  th, td { font-size: 0.78rem; padding: 0.55rem 0.45rem; }
+
+  /* Graphiques */
+  .chart-wrap { height: 220px; }
+  .chart-wrap-tall { height: 250px; }
+  .home-insights-grid { grid-template-columns: 1fr; }
+
+  /* Investissements */
+  .asset-grid { grid-template-columns: 1fr; }
+  .pea-actions-toolbar { flex-direction: column; align-items: stretch; }
+
+  /* Immobilier */
+  .mortgage-simulation-summary { grid-template-columns: 1fr; }
+
+  /* Nouvelles sections */
+  .forecast-grid,
+  .budget-alerts-grid,
+  .goals-container { grid-template-columns: 1fr; }
+  .goals-form button { grid-column: span 1; }
+
+  /* Barre de recherche */
+  .quick-search-bar { border-radius: 14px; }
+
+  /* FIX 3 â€” Zoom iOS sur inputs dans tableaux */
+  .asset-table input,
+  .pea-table input,
+  .treasury-table input,
+  .archive-table input {
+    font-size: 16px !important;
+    min-height: 40px !important;
+  }
+
+  /* FIX 5 â€” Nouvelles sections */
+  .life-goals-form { grid-template-columns: 1fr 1fr; }
+  .life-goals-form button { grid-column: span 2; }
+  .life-goals-container { grid-template-columns: 1fr; }
+  .inflation-alert-grid { grid-template-columns: 1fr; }
+  .patrimony-split-labels { flex-direction: column; gap: 0.3rem; }
+  .fees-simulator .finance-form { grid-template-columns: 1fr; }
+
+  /* Section nav scroll horizontal */
+  .section-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .section-nav::-webkit-scrollbar { display: none; }
+  .nav-link { flex-shrink: 0; }
+
+  /* Auto-transfer presets */
+  .transfer-presets { grid-template-columns: 1fr 1fr; }
+
+  /* Mortgage impact */
+  .mortgage-impact-box { padding: 1rem; }
+
+  /* Budget categories */
+  .budget-cats-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  /* IcÃ´nes seules sur les boutons sauvegarde */
+  .global-control-btn span { display: none; }
+  .global-control-btn i { font-size: 1.15rem; }
+  .global-control-btn { padding: 0.6rem; }
+
+  /* Metric cards en colonne sur trÃ¨s petit Ã©cran */
+  .results-grid { grid-template-columns: 1fr; }
+  .metric-card strong { font-size: 1.5rem; }
+}
+
+
+

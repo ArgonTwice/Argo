@@ -1,0 +1,656 @@
+﻿
+.mortgage-section {
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.mortgage-grid {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.mortgage-grid label {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.mortgage-grid input[readonly] {
+  cursor: default;
+  opacity: 0.95;
+}
+
+.mortgage-simulation-summary {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.mortgage-summary-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.1rem 1.15rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.72));
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.12);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mortgage-summary-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 212, 255, 0.44);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.18);
+}
+
+.mortgage-summary-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.16), transparent 45%, rgba(59, 130, 246, 0.12));
+  pointer-events: none;
+}
+
+.mortgage-summary-card p,
+.mortgage-summary-card strong {
+  position: relative;
+  z-index: 1;
+}
+
+.mortgage-summary-card p {
+  margin: 0 0 0.55rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.mortgage-summary-card strong {
+  display: block;
+  font-size: 1.35rem;
+  color: #f8fbff;
+  letter-spacing: 0.02em;
+}
+
+.mortgage-summary-card:last-child {
+  border-color: rgba(96, 165, 250, 0.45);
+  box-shadow: 0 0 28px rgba(96, 165, 250, 0.18);
+}
+
+.mortgage-gain-badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.75rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(0, 212, 255, 0.12);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  color: #b9f5ff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mortgage-gain-badge i {
+  font-size: 0.85rem;
+}
+
+.mortgage-gain-card {
+  animation: mortgageGlowPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes mortgageGlowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 28px rgba(96, 165, 250, 0.18);
+  }
+
+  50% {
+    box-shadow: 0 0 34px rgba(0, 212, 255, 0.22);
+  }
+}
+
+.mortgage-simulation-note {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.mortgage-impact-box {
+  margin-top: 1.2rem;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.7));
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.15);
+}
+
+.mortgage-impact-box .module-title {
+  margin-top: 0.2rem;
+}
+
+.mortgage-table-wrap {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.mortgage-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.mortgage-table th,
+.mortgage-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mortgage-table th {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.92rem;
+  text-align: right;
+}
+
+.mortgage-table th:first-child {
+  text-align: left;
+}
+
+.mortgage-table td {
+  color: var(--muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mortgage-table td:first-child {
+  text-align: left;
+}
+
+.mortgage-table tr:last-child td {
+  border-bottom: none;
+}
+
+.asset-section {
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(96, 165, 250, 0.16);
+}
+
+.asset-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.asset-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.78));
+  border: 1px solid rgba(148, 163, 184, 0.13);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.asset-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0.05), transparent 50%, rgba(59, 130, 246, 0.05));
+  pointer-events: none;
+}
+
+.asset-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.asset-card:hover {
+  transform: translateY(-1px);
+}
+
+.asset-card-wide {
+  grid-column: 1 / -1;
+}
+
+.asset-kicker {
+  margin: 0 0 0.25rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.asset-card h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.asset-field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.85rem;
+}
+
+.asset-field-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-weight: 700;
+}
+
+#carrefourInterest {
+  background: rgba(15, 23, 42, 0.88);
+  color: var(--accent);
+  cursor: default;
+}
+
+.asset-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.asset-metrics div {
+  flex: 1 1 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.asset-metrics span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.asset-metrics strong {
+  font-size: 1.1rem;
+}
+
+.asset-table-wrap {
+  overflow-x: auto;
+}
+
+.asset-table,
+.pea-table,
+.archive-table,
+.mortgage-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.asset-table th,
+.asset-table td,
+.pea-table th,
+.pea-table td,
+.archive-table th,
+.archive-table td,
+.mortgage-table th,
+.mortgage-table td {
+  padding: 0.85rem 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.12);
+  vertical-align: middle;
+}
+
+.asset-table th,
+.pea-table th,
+.archive-table th,
+.mortgage-table th {
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 800;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.35));
+  letter-spacing: 0.02em;
+}
+
+.asset-table td,
+.pea-table td,
+.archive-table td,
+.mortgage-table td {
+  color: var(--muted);
+}
+
+.asset-table td strong,
+.mortgage-table td strong {
+  color: var(--text);
+}
+
+.asset-table tbody tr:hover td,
+.archive-table tbody tr:hover td,
+.mortgage-table tbody tr:hover td {
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.pea-table {
+  margin-top: 0.75rem;
+}
+
+.pea-table .pea-pru-readonly {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.7rem;
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.45);
+  color: rgba(203, 213, 225, 0.8);
+  font-size: 0.95rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.pea-table .pea-gain-positive {
+  color: var(--accent);
+}
+
+.pea-table .pea-gain-negative {
+  color: #ffb98f;
+}
+
+.bank-accounts-card {
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.78));
+  box-shadow: 0 18px 45px rgba(14, 165, 233, 0.12);
+  backdrop-filter: blur(16px);
+  padding: 1.15rem;
+}
+
+.home-bank-card {
+  margin-top: 1.25rem;
+}
+
+.bank-header-row {
+  align-items: center;
+}
+
+.bank-accounts-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+  align-items: end;
+  margin: 1rem 0;
+}
+
+.bank-accounts-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bank-accounts-form label span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.bank-accounts-card .asset-table-wrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.bank-accounts-card .asset-table th,
+.bank-accounts-card .asset-table td {
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+.bank-accounts-card .asset-metrics {
+  margin-top: 1rem;
+}
+
+.reset-section-btn {
+  border: 1px solid rgba(248, 113, 113, 0.24);
+  border-radius: var(--radius-pill);
+  padding: 0.65rem 0.95rem;
+  background: rgba(248, 113, 113, 0.08);
+  color: #fecdd3;
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  opacity: 0.82;
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reset-section-btn:hover {
+  opacity: 1;
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.5);
+  background: rgba(248, 113, 113, 0.15);
+  box-shadow: 0 0 24px rgba(248, 113, 113, 0.18);
+}
+
+.reset-section-btn i {
+  font-size: 0.9rem;
+}
+
+.success-toast {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 40;
+  min-width: 280px;
+  max-width: min(92vw, 420px);
+  padding: 0.85rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(52, 211, 153, 0.34);
+  color: #d1fae5;
+  font-weight: 800;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.55);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.success-toast.toast-success {
+  background: rgba(15, 23, 42, 0.96);
+}
+
+.success-toast.toast-warning {
+  background: rgba(30, 10, 20, 0.96);
+  border-color: rgba(248, 113, 113, 0.42);
+  color: #ffe4e6;
+}
+
+.success-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.success-toast i {
+  font-size: 0.95rem;
+}
+
+.bank-accounts-form .action-btn {
+  min-height: 3.2rem;
+  align-self: end;
+  border-radius: 999px;
+  padding-inline: 1.1rem;
+  font-weight: 800;
+  box-shadow: 0 12px 35px rgba(56, 189, 248, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.bank-accounts-form .action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 40px rgba(56, 189, 248, 0.24);
+  filter: saturate(1.04);
+}
+
+.bank-balance-input {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  background: rgba(15, 23, 42, 0.7);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.bank-total-row td {
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.asset-table input:focus {
+  border-color: rgba(56, 189, 248, 0.75);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.18);
+}
+
+.crypto-price-cell {
+  cursor: pointer;
+}
+
+.crypto-price-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.crypto-price-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.crypto-badge-api {
+  background: rgba(56, 189, 248, 0.15);
+  color: #93c5fd;
+}
+
+.crypto-badge-manual {
+  background: rgba(244, 114, 182, 0.15);
+  color: #f9a8d4;
+}
+
+.crypto-badge-empty {
+  background: rgba(148, 163, 184, 0.18);
+  color: #cbd5e1;
+}
+
+.crypto-price-edit-input {
+  width: 100%;
+  min-width: 130px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  background: rgba(15, 23, 42, 0.7);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.crypto-add-row {
+  margin-top: 1rem;
+}
+
+.crypto-add-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-weight: 600;
+}
+
+.crypto-add-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.crypto-add-controls input,
+.crypto-add-controls button {
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.75);
+  color: var(--text);
+  font-size: 0.96rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.crypto-add-controls input:focus,
+.crypto-add-controls button:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.16);
+}
+
+.crypto-add-controls input {
+  flex: 1 1 180px;
+}
+
+.crypto-refresh-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  margin-top: 0.9rem;
+}
+
+#marketRefreshButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 0.9rem 1.1rem;
+}
+
+#marketRefreshButton i {
+  font-size: 0.95rem;
+}
+
+#marketRefreshButton:disabled {
+  opacity: 0.72;
+  cursor: wait;
+  box-shadow: none;
+}
+
+.market-refresh-notice {
+  margin: 0;
+  min-height: 1.2rem;
+  color: var(--accent-2);
+  font-size: 0.92rem;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.market-refresh-notice.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

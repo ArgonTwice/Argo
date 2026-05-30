@@ -1,0 +1,400 @@
+﻿
+.action-btn,
+.danger-btn {
+  border: 0;
+  cursor: pointer;
+  font-weight: 800;
+  border-radius: var(--radius-pill);
+  min-height: 3rem;
+  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, filter 0.2s ease;
+}
+
+.action-btn:hover,
+.danger-btn:hover {
+  transform: translateY(-1px);
+}
+
+.action-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #03111f;
+  box-shadow: 0 0 24px rgba(59, 130, 246, 0.24);
+  padding: 0.9rem 1.1rem;
+}
+
+.action-btn:hover {
+  box-shadow: 0 0 28px rgba(103, 232, 249, 0.34);
+  filter: saturate(1.03);
+}
+
+.action-btn:focus-visible,
+.danger-btn:focus-visible,
+.crypto-add-controls input:focus-visible,
+.finance-form input:focus-visible,
+.asset-field-grid input:focus-visible,
+.pea-table input:focus-visible,
+.asset-table input:focus-visible,
+.crypto-price-edit-input:focus-visible {
+  outline: 2px solid rgba(103, 232, 249, 0.9);
+  outline-offset: 2px;
+}
+
+.danger-btn {
+  background: rgba(252, 165, 165, 0.12);
+  color: #ffe4e6;
+  padding: 0.75rem 0.95rem;
+  border: 1px solid rgba(252, 165, 165, 0.22);
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.78);
+  border-radius: var(--radius-pill);
+  min-width: 2.8rem;
+  min-height: 2.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.icon-btn i {
+  font-size: 0.95rem;
+}
+
+.crypto-status {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.results-grid {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.summary-hero {
+  margin-top: 1.2rem;
+  padding: 1.15rem 1.2rem 1.2rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 64, 175, 0.56));
+  border: 1px solid rgba(103, 232, 249, 0.34);
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.16), 0 24px 58px rgba(2, 6, 23, 0.64);
+}
+
+.summary-hero-kicker {
+  margin: 0;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.summary-hero h2 {
+  margin: 0.45rem 0 0.35rem;
+  font-size: clamp(2rem, 2.2vw + 1.4rem, 2.6rem);
+  letter-spacing: -0.03em;
+  color: #f8fbff;
+  text-shadow: 0 0 28px rgba(56, 189, 248, 0.26);
+}
+
+.summary-hero .investment-breakdown {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #dbeafe;
+  line-height: 1.5;
+}
+
+.home-insights-grid {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.chart-card {
+  padding: 1rem;
+}
+
+.chart-wrap {
+  position: relative;
+  min-height: 280px;
+  margin-top: 1rem;
+}
+
+.chart-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.metric-card {
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 220px;
+  min-height: 120px;
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.72));
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0.06), transparent 45%, rgba(59, 130, 246, 0.06));
+  pointer-events: none;
+}
+
+.metric-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.metric-card span {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.metric-card strong {
+  font-size: 1.55rem;
+  color: var(--accent);
+}
+
+.savings-rate-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.savings-rate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.savings-rate-header span:first-child {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.savings-rate-caption {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.savings-rate-gauge-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.savings-rate-gauge {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.18);
+  position: relative;
+}
+
+.savings-rate-gauge::before {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.96);
+  box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.12);
+}
+
+.savings-rate-gauge-core {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.savings-rate-gauge-core strong {
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.savings-rate-gauge-core span {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.savings-rate-copy {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.savings-rate-copy p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.savings-rate-trend-line {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  color: var(--text) !important;
+}
+
+.savings-rate-trend-line i {
+  font-size: 0.95rem;
+}
+
+.objective-module {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.72));
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.45);
+  backdrop-filter: blur(12px);
+}
+
+.objective-progress-label {
+  margin: 0 0 0.85rem;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.objective-progress-track {
+  position: relative;
+  width: 100%;
+  height: 1rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.objective-progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.28);
+  transition: width 0.25s ease;
+}
+
+.remaining-value-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.remaining-warning-icon {
+  color: #f87171;
+  font-size: 1.1rem;
+  text-shadow: 0 0 14px rgba(248, 113, 113, 0.55);
+}
+
+.metric-card.alert-mode {
+  border-left-color: #f87171;
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.28), 0 0 24px rgba(248, 113, 113, 0.18);
+  animation: pulse 2s infinite;
+}
+
+.metric-card.alert-mode strong {
+  color: #f87171;
+  text-shadow: 0 0 18px rgba(248, 113, 113, 0.35);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+
+  50% {
+    transform: scale(1.015);
+    opacity: 1;
+  }
+}
+
+.accent-income,
+.accent-obligations,
+.accent-remaining,
+.accent-saving,
+.accent-checking {
+  border-left: 4px solid var(--accent);
+}
+
+/* Carte CC â€” couleur ambre, change dynamiquement en vert/rouge */
+.accent-checking {
+  border-left-color: #fbbf24;
+}
+.accent-checking.metric-positive strong { color: #34d399; }
+.accent-checking.metric-negative strong { color: #f87171; }
+.accent-checking.metric-negative {
+  border-left-color: #f87171;
+  box-shadow: 0 0 0 1px rgba(248,113,113,0.2), 0 0 20px rgba(248,113,113,0.12);
+}
+.accent-checking.metric-positive {
+  border-left-color: #34d399;
+  box-shadow: 0 0 0 1px rgba(52,211,153,0.2), 0 0 20px rgba(52,211,153,0.1);
+}
+
+/* Sous-label dans une carte de mÃ©trique */
+.metric-card-sub {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+  display: block;
+  font-weight: 500;
+  opacity: 0.85;
+}
+.metric-card-hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.accent-invested {
+  border-left: 4px solid var(--success);
+}
+
+.accent-invested strong {
+  color: var(--success);
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.35);
+}
+
+.investment-breakdown {
+  margin-top: 0.7rem;
+  font-size: 0.86rem;
+  color: rgba(240, 249, 255, 0.92);
+  line-height: 1.45;
+}
+

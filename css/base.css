@@ -1,0 +1,51 @@
+﻿:root {
+  --bg: #030712;
+  --bg-2: #0b1120;
+  --panel: rgba(15, 23, 42, 0.82);
+  --panel-2: rgba(15, 23, 42, 0.68);
+  --panel-border: rgba(96, 165, 250, 0.24);
+  --panel-border-strong: rgba(103, 232, 249, 0.34);
+  --text: #f8fbff;
+  --muted: #c7e4ff;
+  --accent: #67e8f9;
+  --accent-strong: #38bdf8;
+  --accent-2: #60a5fa;
+  --success: #34d399;
+  --warning: #fca5a5;
+  --shadow: 0 24px 60px rgba(2, 6, 23, 0.72);
+  --shadow-soft: 0 18px 44px rgba(2, 6, 23, 0.52);
+  --radius: 24px;
+  --radius-sm: 20px;
+  --radius-pill: 999px;
+  --space-1: 0.75rem;
+  --space-2: 1rem;
+  --space-3: 1.35rem;
+  --space-4: 1.75rem;
+  --blur: blur(16px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Lato', "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top, rgba(56, 189, 248, 0.22), transparent 18%),
+    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.18), transparent 24%),
+    linear-gradient(135deg, #020617, #0b1120 48%, #020617);
+  line-height: 1.5;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(103, 232, 249, 0.28);
+  color: #f8fbff;
+}

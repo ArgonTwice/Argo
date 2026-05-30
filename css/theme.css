@@ -1,0 +1,240 @@
+﻿[data-theme="light"] {
+  --bg: #f1f5f9;
+  --text: #0f172a;
+  --muted: #64748b;
+  --accent: #0284c7;
+  --panel-border: rgba(148,196,235,0.5);
+  --panel-border-strong: rgba(2,132,199,0.45);
+  --shadow-soft: 0 4px 24px rgba(14,116,181,0.10);
+  --blur: blur(12px);
+}
+
+[data-theme="light"] body {
+  background: linear-gradient(160deg, #dbeafe 0%, #f0f9ff 45%, #f8fafc 100%) !important;
+  color: #0f172a !important;
+}
+
+/* Tous les textes */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] .module-title,
+[data-theme="light"] .eyebrow,
+[data-theme="light"] .asset-kicker { color: #0f172a !important; }
+[data-theme="light"] p,
+[data-theme="light"] span,
+[data-theme="light"] label,
+[data-theme="light"] td { color: #334155 !important; }
+[data-theme="light"] th { color: #475569 !important; }
+[data-theme="light"] .panel-heading p,
+[data-theme="light"] .subtitle,
+[data-theme="light"] .dynamic-empty,
+[data-theme="light"] .crypto-status { color: #64748b !important; }
+
+/* Panels et cards â€” fond blanc pur */
+[data-theme="light"] .panel,
+[data-theme="light"] .asset-card,
+[data-theme="light"] .metric-card,
+[data-theme="light"] .mortgage-summary-card,
+[data-theme="light"] .goal-card,
+[data-theme="light"] .dynamic-section,
+[data-theme="light"] .dynamic-entry {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04) !important;
+}
+[data-theme="light"] .panel::before { display: none; }
+[data-theme="light"] .panel:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 4px 20px rgba(2,132,199,0.12);
+}
+
+/* Header */
+[data-theme="light"] .sticky-header {
+  background: rgba(255,255,255,0.97);
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+
+/* Navigation */
+[data-theme="light"] .nav-link {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+[data-theme="light"] .nav-link:hover {
+  background: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #0369a1 !important;
+}
+[data-theme="light"] .nav-link.active {
+  background: #0369a1 !important;
+  border-color: #0369a1 !important;
+  color: #ffffff !important;
+}
+
+/* Boutons sauvegarde */
+[data-theme="light"] .global-control-btn {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+}
+[data-theme="light"] .global-control-btn i { color: #0284c7 !important; }
+[data-theme="light"] .global-control-btn:hover {
+  background: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #0369a1 !important;
+}
+[data-theme="light"] .global-control-btn-theme i { color: #d97706 !important; }
+
+/* Inputs */
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+}
+[data-theme="light"] input::placeholder { color: #94a3b8 !important; }
+[data-theme="light"] input:focus {
+  background: #ffffff !important;
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 0 3px rgba(2,132,199,0.12) !important;
+}
+
+/* Tableaux */
+[data-theme="light"] th {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+[data-theme="light"] td { border-bottom-color: #f1f5f9 !important; }
+[data-theme="light"] tr:hover td { background: #f8fafc !important; }
+
+/* Boutons action */
+[data-theme="light"] .action-btn {
+  background: #0369a1 !important;
+  border-color: #0369a1 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(3,105,161,0.25) !important;
+}
+[data-theme="light"] .action-btn:hover {
+  background: #0284c7 !important;
+  box-shadow: 0 4px 16px rgba(2,132,199,0.35) !important;
+}
+[data-theme="light"] .danger-btn {
+  background: #fef2f2 !important;
+  border-color: #fecaca !important;
+  color: #dc2626 !important;
+}
+[data-theme="light"] .reset-section-btn { color: #dc2626 !important; }
+
+/* Summary hero */
+[data-theme="light"] .summary-hero {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe) !important;
+  border-color: #93c5fd !important;
+  box-shadow: none !important;
+}
+[data-theme="light"] .summary-hero h2 { color: #0369a1 !important; }
+[data-theme="light"] .summary-hero-kicker { color: #0284c7 !important; }
+
+/* Metric cards accent */
+[data-theme="light"] .accent-income {
+  background: #f0f9ff !important;
+  border-left-color: #0284c7 !important;
+}
+[data-theme="light"] .accent-obligations {
+  background: #fef2f2 !important;
+  border-left-color: #dc2626 !important;
+}
+[data-theme="light"] .accent-remaining {
+  background: #f0fdf4 !important;
+  border-left-color: #16a34a !important;
+}
+[data-theme="light"] .accent-saving {
+  background: #faf5ff !important;
+  border-left-color: #7c3aed !important;
+}
+
+/* Sections spÃ©ciales */
+[data-theme="light"] .auto-transfer-block {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  box-shadow: none;
+}
+[data-theme="light"] .auto-transfer-label span { color: #0284c7; }
+[data-theme="light"] .auto-transfer-summary {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  color: #0369a1;
+}
+
+[data-theme="light"] .budget-alerts-panel {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+[data-theme="light"] .budget-alerts-title { color: #92400e !important; }
+[data-theme="light"] .budget-alerts-title i { color: #d97706 !important; }
+[data-theme="light"] .budget-alert-item label span { color: #64748b !important; }
+[data-theme="light"] .budget-alert-status {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .forecast-row {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+[data-theme="light"] .forecast-highlight {
+  background: #eff6ff !important;
+  border-color: #93c5fd !important;
+}
+/* â”€â”€ Rendement rÃ©el vs inflation â”€â”€ */
+.inflation-alert-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.real-return-display { padding: 1rem; border-radius: 14px; }
+.real-return-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 0.4rem;
+}
+.real-return-value.positive { color: #34d399; }
+.real-return-value.negative { color: #f87171; }
+.real-return-hint { font-size: 0.86rem; color: var(--muted); margin: 0; }
+@media (max-width: 768px) {
+  .inflation-alert-grid { grid-template-columns: 1fr; }
+}
+
+[data-theme="light"] .inflation-display {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .quick-search-bar {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+}
+[data-theme="light"] .quick-search-bar input { color: #0f172a !important; }
+[data-theme="light"] .search-results-dropdown {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
+}
+[data-theme="light"] .search-result-item:hover { background: #f0f9ff !important; }
+[data-theme="light"] .search-result-item div strong { color: #0f172a !important; }
+[data-theme="light"] .search-result-item em { color: #0284c7 !important; }
+
+[data-theme="light"] .success-toast {
+  background: #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
+  color: #15803d !important;
+}
+

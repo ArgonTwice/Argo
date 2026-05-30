@@ -1,0 +1,668 @@
+﻿/* â”€â”€â”€ Responsive â”€â”€â”€ */
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   HARMONISATION VISUELLE GLOBALE
+   CohÃ©rence d'espacement, hiÃ©rarchie panneaux, typographie,
+   boutons, saisies dynamiques, responsive.
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* â”€â”€ A. OVERFLOW : conserver hidden sur les panels/cards â”€â”€â”€â”€â”€â”€â”€
+   Les boutons ne sont pas coupÃ©s par overflow:hidden si leur
+   parent a un padding suffisant. La cause rÃ©elle du problÃ¨me
+   Ã©tait le manque de flex-shrink:0 et des grids trop serrÃ©s.
+   On garde overflow:hidden pour que le ::before dÃ©gradÃ© reste
+   bien clipÃ© aux coins arrondis sans bidouille supplÃ©mentaire. */
+
+/* (les dÃ©clarations overflow:hidden d'origine restent valides) */
+
+/* SÃ©curitÃ© : s'assurer que les barres de progression conservent
+   leur clipping (dÃ©jÃ  dÃ©fini, on renforce). */
+.objective-progress-track,
+.goal-progress-track,
+.debt-ratio-bar-track {
+  overflow: hidden;
+}
+/* Exception : le repÃ¨re 33% doit dÃ©passer la barre */
+.debt-ratio-bar-track {
+  overflow: visible;
+}
+
+/* â”€â”€ B. BOUTONS â€” ne plus se comprimer dans les rangÃ©es flex â”€â”€â”€
+   flex-shrink:0 sur tous les boutons d'action dans les en-tÃªtes
+   et les formulaires en grid/flex. */
+.reset-section-btn,
+.section-add-btn,
+.goals-add-btn,
+.budget-cat-add-btn,
+.action-btn,
+.danger-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Permet aux divs de texte de rÃ©trÃ©cir Ã  la place du bouton */
+.section-heading-row > div:first-child,
+.bank-header-row > div:first-child,
+.results-panel-header > div:first-child,
+.archive-panel-header > div:first-child,
+.dynamic-section-header > div:first-child,
+.pea-actions-toolbar > p {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+/* Taille minimale commune pour tous les boutons interactifs */
+.action-btn,
+.global-control-btn {
+  min-height: 3rem;
+}
+.danger-btn,
+.reset-section-btn {
+  min-height: 2.8rem;
+}
+
+/* â”€â”€ C. GRILLES DE FORMULAIRE AVEC BOUTON AUTO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   Les colonnes fr + auto peuvent Ã©craser le bouton sur les
+   Ã©crans intermÃ©diaires (769â€“900 px). */
+
+/* â”€â”€ D. DYNAMIC-ENTRY â€” charges fixes (5 colonnes) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   name | amount | day | recurring-toggle | delete
+   âš  Toujours 5 colonnes au-dessus de 600px pour Ã©viter le retour
+     Ã  la ligne du bouton supprimer. */
+.dynamic-entry:has(.recurring-toggle-label) {
+  grid-template-columns:
+    minmax(0, 1.3fr)
+    minmax(100px, 0.7fr)
+    minmax(65px, 0.4fr)
+    minmax(115px, auto)
+    minmax(46px, auto);
+  column-gap: 0.9rem;
+}
+
+/* SÃ©parateur visuel : ligne dans le gap entre toggle et bouton */
+.dynamic-entry:has(.recurring-toggle-label) > button:last-child {
+  position: relative;
+}
+.dynamic-entry:has(.recurring-toggle-label) > button:last-child::before {
+  content: '';
+  position: absolute;
+  left: calc(-0.9rem / 2 - 0.5px); /* centre dans le column-gap de 0.9rem */
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background: rgba(96, 165, 250, 0.2);
+  pointer-events: none;
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ESPACEMENT â€” FLUX DES SECTIONS
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* Toutes les sections de page : flux flex-colonne uniforme */
+.page-section.is-visible {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* RÃ©initialiser les marges individuelles qui doubleraient le gap */
+.forecast-panel,
+.goals-panel,
+.compound-panel {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Plus de border-top / padding-top redondants sur les wrappers */
+.asset-section,
+.mortgage-section {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* Ã‰viter la double-marge sur la carte banque */
+.home-bank-card {
+  margin-top: 0;
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   HIÃ‰RARCHIE DES PANNEAUX
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* Un .panel imbriquÃ© dans un autre .panel est une sous-section :
+   fond plus sombre, bordure plus discrÃ¨te, ombre lÃ©gÃ¨re. */
+.form-panel > .panel,
+.form-panel > section.panel {
+  background: rgba(10, 15, 30, 0.72);
+  border-color: rgba(96, 165, 250, 0.13);
+  box-shadow: 0 2px 12px rgba(2, 6, 23, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem 1.2rem;
+  margin-top: 1.2rem;
+}
+
+/* La ::before de ces sous-panneaux moins intense */
+.form-panel > .panel::before,
+.form-panel > section.panel::before {
+  opacity: 0.5;
+}
+
+/* Panel budget-alerts : mÃªme poids visuel que les sous-panneaux imbriquÃ©s */
+.form-panel .budget-alerts-panel {
+  background: rgba(10, 15, 30, 0.72);
+  border-color: rgba(96, 165, 250, 0.13);
+  box-shadow: 0 2px 12px rgba(2, 6, 23, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem 1.2rem;
+  margin-top: 1.2rem;
+  margin-bottom: 0;
+}
+
+.form-panel .budget-alerts-panel::before {
+  opacity: 0.5;
+}
+
+/* Espacement interne de la form-panel */
+.form-panel > .dynamic-sections-stack {
+  margin-top: 1rem;
+}
+
+/* La section charges n'a pas besoin du hover de .panel
+   (elle est le conteneur principal, pas une card interactive) */
+.form-panel:hover {
+  border-color: var(--panel-border);
+  box-shadow: var(--shadow-soft);
+  transform: none;
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   LIGNES DE SAISIE DYNAMIQUES
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* Chaque ligne de saisie reÃ§oit un fond subtil + bordure fine
+   pour une meilleure lisibilitÃ© et sÃ©paration visuelle. */
+.dynamic-entry {
+  background: rgba(15, 23, 42, 0.52);
+  border: 1px solid rgba(96, 165, 250, 0.1);
+  border-radius: 14px;
+  padding: 0.6rem 0.75rem;
+  align-items: end;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.dynamic-entry:hover {
+  border-color: rgba(103, 232, 249, 0.2);
+  background: rgba(15, 23, 42, 0.64);
+}
+
+/* Ã‰tiquettes des champs dans les lignes dynamiques
+   âš  On exclut .recurring-toggle-label dont le span est le libellÃ©
+     du toggle, pas un label de champ de formulaire. */
+.dynamic-entry label:not(.recurring-toggle-label) > span {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+  opacity: 0.85;
+}
+
+/* â”€â”€ Toggle rÃ©current â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* La rÃ¨gle `.dynamic-entry input { width: 100% }` a une
+   spÃ©cificitÃ© (0,1,1) qui Ã©crase `width: 1.1rem` (0,1,0).
+   On contre avec une spÃ©cificitÃ© plus haute (0,2,0). */
+.dynamic-entry .recurring-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Le span du toggle doit rester inline-flex dans son conteneur
+   flex-row â€” empÃªche le dÃ©bordement hors du label. */
+.recurring-toggle-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 0;
+  opacity: 1;
+  white-space: nowrap;
+}
+
+/* RÃ©current toggle : aligne sur le bas des inputs */
+.recurring-toggle-label {
+  padding-bottom: 0.7rem;
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   TYPOGRAPHIE & Ã‰TIQUETTES
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* CohÃ©rence des labels de champs dans tous les formulaires */
+.finance-form label > span,
+.goals-form-field > span,
+.compound-field > span,
+.bank-accounts-form label > span,
+.asset-field-grid label > span,
+.mortgage-grid label > span,
+.auto-transfer-label > span,
+.checking-label > span {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* Kickers de section : style unifiÃ© */
+.asset-kicker,
+.debt-ratio-kicker,
+.summary-hero-kicker,
+.goal-card-kicker,
+.budget-cat-kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+/* Panel-heading : lÃ©ger padding-bottom pour sÃ©parer du contenu */
+.panel-heading {
+  padding-bottom: 0.1rem;
+}
+
+/* Section-heading-row : aligne verticalement les boutons au centre */
+.section-heading-row,
+.bank-header-row {
+  align-items: center;
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   CONSISTANCE DES CARDS ACTIFS
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* Asset-grid : gap uniforme */
+.asset-grid {
+  gap: 1.25rem;
+}
+
+/* Asset-card : aligne l'en-tÃªte (section-heading-row) au centre */
+.asset-card .section-heading-row,
+.asset-card .bank-header-row {
+  margin-bottom: 0.75rem;
+}
+
+/* CohÃ©rence de padding entre bank-accounts-card et les autres */
+.bank-accounts-card {
+  padding: 1.15rem 1.2rem;
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   THÃˆME CLAIR â€” mises Ã  jour pour les nouveaux Ã©lÃ©ments
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+[data-theme="light"] .form-panel > .panel,
+[data-theme="light"] .form-panel > section.panel,
+[data-theme="light"] .form-panel .budget-alerts-panel {
+  background: rgba(240, 249, 255, 0.65);
+  border-color: rgba(147, 197, 253, 0.3);
+  box-shadow: 0 2px 12px rgba(14, 116, 181, 0.08);
+}
+
+[data-theme="light"] .dynamic-entry {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(147, 197, 253, 0.3);
+}
+
+[data-theme="light"] .dynamic-entry:hover {
+  background: rgba(224, 242, 254, 0.85);
+  border-color: rgba(2, 132, 199, 0.3);
+}
+
+[data-theme="light"] .dynamic-entry label > span {
+  color: #64748b;
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   NOUVELLES FONCTIONNALITÃ‰S v20260528f
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* â”€â”€ Deltas M / M-1 â”€â”€ */
+.metric-delta {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  margin-top: 0.12rem;
+  letter-spacing: 0.01em;
+}
+.delta-positive { color: #34d399; }
+.delta-negative { color: #f87171; }
+.delta-neutral  { color: var(--muted); opacity: 0.75; }
+
+/* â”€â”€ Score de santÃ© financiÃ¨re â”€â”€ */
+.health-score-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.65rem;
+  padding: 0.32rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  border: 1px solid transparent;
+  cursor: default;
+  transition: all 0.35s ease;
+  letter-spacing: 0.01em;
+}
+.health-green  { background: rgba(52,211,153,0.14);  border-color: rgba(52,211,153,0.4);  color: #34d399; }
+.health-yellow { background: rgba(251,191,36,0.14);  border-color: rgba(251,191,36,0.4);  color: #fbbf24; }
+.health-orange { background: rgba(249,115,22,0.14);  border-color: rgba(249,115,22,0.4);  color: #fb923c; }
+.health-red    { background: rgba(248,113,113,0.14); border-color: rgba(248,113,113,0.4); color: #f87171; }
+
+/* â”€â”€ Budget quotidien â”€â”€ */
+.accent-daily { border-left: 4px solid #a78bfa; }
+.accent-daily strong { color: #a78bfa; }
+.accent-daily.accent-daily-ok strong { color: #34d399; }
+.accent-daily.accent-daily-tight strong { color: #fbbf24; }
+.accent-security {
+  border-left: 3px solid #0891b2;
+  background: linear-gradient(135deg,
+    rgba(8,145,178,0.12), rgba(15,23,42,0.85));
+}
+[data-theme="light"] .accent-security {
+  background: #f0f9ff;
+  border-left-color: #0891b2;
+}
+
+/* â”€â”€ RÃ©partition patrimoniale â”€â”€ */
+.patrimony-split { display: flex; flex-direction: column; gap: 0.75rem; }
+.patrimony-split-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+}
+.patrimony-split-labels span:first-child { color: #0891b2; }
+.patrimony-split-labels span:last-child  { color: #8b5cf6; }
+.patrimony-split-bar {
+  display: flex;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(15,23,42,0.4);
+  border: 1px solid rgba(148,163,184,0.15);
+}
+.patrimony-split-secure {
+  background: linear-gradient(90deg, #0891b2, #06b6d4);
+  transition: width 0.6s ease;
+  height: 100%;
+}
+.patrimony-split-growth {
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
+  transition: width 0.6s ease;
+  height: 100%;
+}
+.patrimony-split-advice { font-size: 0.84rem; color: var(--muted); }
+[data-theme="light"] .patrimony-split-bar { background: #f1f5f9; }
+
+/* â”€â”€ Simulation d'achat â”€â”€ */
+.simulation-block {
+  margin-top: 1.2rem;
+  padding: 1.1rem 1.15rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.74));
+  border: 1px solid rgba(139,92,246,0.28);
+  box-shadow: 0 0 20px rgba(139,92,246,0.08), var(--shadow-soft);
+  backdrop-filter: var(--blur);
+  position: relative;
+  overflow: hidden;
+}
+.simulation-block::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(139,92,246,0.07), transparent 45%, rgba(59,130,246,0.05));
+  pointer-events: none;
+}
+.simulation-block > * { position: relative; z-index: 1; }
+
+.simulation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+.simulation-header i {
+  font-size: 1.1rem;
+  color: rgba(167,139,250,0.9);
+  flex-shrink: 0;
+}
+.simulation-header h3 {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.simulation-header p {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.simulation-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+.simulation-label > span {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.simulation-label input {
+  width: 100%;
+  min-height: 3.1rem;
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-size: 0.96rem;
+  color: var(--text);
+  background: rgba(15,23,42,0.72);
+  outline: none;
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.simulation-label input::placeholder { color: rgba(219,234,254,0.45); }
+.simulation-label input:focus {
+  border-color: rgba(167,139,250,0.6);
+  box-shadow: 0 0 0 3px rgba(167,139,250,0.16);
+}
+
+.simulation-result {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: 1px solid rgba(96,165,250,0.15);
+  color: var(--muted);
+  min-height: 2.6rem;
+  display: flex;
+  align-items: center;
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+.simulation-result:empty { display: none; }
+.simulation-ok      { color: #34d399 !important; border-color: rgba(52,211,153,0.3)  !important; background: rgba(52,211,153,0.08)  !important; }
+.simulation-warning { color: #fbbf24 !important; border-color: rgba(251,191,36,0.3)  !important; background: rgba(251,191,36,0.08)  !important; }
+.simulation-danger  { color: #f87171 !important; border-color: rgba(248,113,113,0.3) !important; background: rgba(248,113,113,0.08) !important; }
+
+/* â”€â”€ Charges Ã  venir 7 jours â”€â”€ */
+.upcoming-charges-panel { margin: 1rem 0 0; }
+
+.upcoming-charges-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.8rem;
+}
+.upcoming-charge-row {
+  display: grid;
+  grid-template-columns: 110px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.72rem 1rem;
+  border-radius: 12px;
+  background: rgba(15,23,42,0.55);
+  border: 1px solid rgba(96,165,250,0.13);
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.upcoming-charge-row:hover { background: rgba(59,130,246,0.08); }
+.upcoming-charge-row.upcoming-today {
+  border-color: rgba(251,191,36,0.38);
+  background: rgba(251,191,36,0.07);
+}
+.upcoming-charge-day {
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 0.83rem;
+}
+.upcoming-charge-day.upcoming-day-today { color: #fbbf24; }
+.upcoming-charge-name { color: var(--text); font-weight: 600; }
+.upcoming-charge-amount {
+  color: #f87171;
+  font-weight: 700;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.upcoming-charge-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  margin-top: 0.2rem;
+  border-radius: 12px;
+  background: rgba(248,113,113,0.07);
+  border: 1px solid rgba(248,113,113,0.2);
+  font-size: 0.9rem;
+}
+.upcoming-charge-total span { color: var(--muted); }
+.upcoming-charge-total strong { color: #f87171; font-weight: 800; }
+
+/* â”€â”€ Overrides thÃ¨me clair â”€â”€ */
+[data-theme="light"] .health-green  { background: rgba(5,150,105,0.1);  color: #059669; border-color: rgba(5,150,105,0.35);  }
+[data-theme="light"] .health-yellow { background: rgba(217,119,6,0.1);  color: #d97706; border-color: rgba(217,119,6,0.35);  }
+[data-theme="light"] .health-orange { background: rgba(234,88,12,0.1);  color: #ea580c; border-color: rgba(234,88,12,0.35);  }
+[data-theme="light"] .health-red    { background: rgba(220,38,38,0.1);  color: #dc2626; border-color: rgba(220,38,38,0.35);  }
+[data-theme="light"] .simulation-block { background: rgba(249,250,251,0.95); border-color: rgba(139,92,246,0.3); }
+[data-theme="light"] .simulation-label input { background: #fff; color: #1e293b; }
+[data-theme="light"] .upcoming-charge-row { background: rgba(255,255,255,0.85); border-color: rgba(147,197,253,0.35); }
+[data-theme="light"] .upcoming-charge-row.upcoming-today { background: rgba(254,252,232,0.9); border-color: rgba(202,138,4,0.35); }
+[data-theme="light"] .upcoming-charge-total { background: rgba(254,226,226,0.7); border-color: rgba(220,38,38,0.2); }
+[data-theme="light"] .delta-neutral { color: #64748b; }
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   REDESIGN COMPLET â€” v20260529a
+   Mobile-first Â· UX natif Â· Touch-optimisÃ©
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* â”€â”€ Transition fluide entre sections â”€â”€ */
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-section.is-visible {
+  animation: sectionIn 0.2s ease both;
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   BOTTOM TAB BAR â€” navigation mobile native
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.mobile-tab-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(11, 17, 32, 0.97);
+  border-top: 1px solid rgba(103, 232, 249, 0.18);
+  box-shadow: 0 -8px 24px rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(20px);
+  height: 64px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.tab-btn {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  border: none;
+  background: transparent;
+  color: rgba(148, 163, 184, 0.65);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.45rem 0;
+  position: relative;
+  transition: color 0.2s ease;
+  overflow: hidden;
+}
+.tab-btn i {
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+.tab-btn span {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+.tab-btn.active {
+  color: var(--accent);
+}
+.tab-btn.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 2px;
+  border-radius: 0 0 3px 3px;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(103, 232, 249, 0.55);
+}
+.tab-btn.active i {
+  transform: translateY(-1px);
+}
+
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   LIGHT THEME â€” bottom tab bar
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+[data-theme="light"] .mobile-tab-bar {
+  background: rgba(248, 252, 255, 0.98);
+  border-top-color: rgba(147, 197, 253, 0.45);
+  box-shadow: 0 -4px 20px rgba(14, 116, 181, 0.08);
+}
+[data-theme="light"] .tab-btn { color: #94a3b8; }
+[data-theme="light"] .tab-btn.active { color: #0284c7; }
+[data-theme="light"] .tab-btn.active::before {
+  background: #0284c7;
+  box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
+}
+

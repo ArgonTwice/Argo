@@ -1,0 +1,448 @@
+﻿
+.app-shell {
+  width: min(1160px, calc(100% - 1.4rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1.3rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.topbar h1,
+.panel-heading h2,
+.metric-card strong,
+.asset-card h3,
+.module-title {
+  font-family: 'Poppins', "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: clamp(1.74rem, 1.9vw + 1.1rem, 2.3rem);
+  color: #f8fbff;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 24px rgba(56, 189, 248, 0.2);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+  max-width: 34rem;
+  line-height: 1.6;
+}
+
+.section-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.15rem;
+}
+
+.nav-link {
+  border: 1px solid rgba(96, 165, 250, 0.26);
+  border-radius: var(--radius-pill);
+  padding: 0.7rem 1.35rem;
+  background: rgba(15, 23, 42, 0.78);
+  color: var(--text);
+  font-size: 0.93rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  transform: translateY(-1px);
+  border-color: rgba(103, 232, 249, 0.5);
+  box-shadow: 0 0 24px rgba(103, 232, 249, 0.18);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(103, 232, 249, 0.12));
+}
+
+.nav-link:active {
+  transform: translateY(0);
+  opacity: 0.94;
+}
+
+.global-control-bar {
+  position: sticky;
+  top: 0.85rem;
+  z-index: 12;
+  margin: 0.85rem 0 1.1rem;
+  padding: 0.85rem 0.95rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  align-items: stretch;
+  background: rgba(30, 41, 59, 0.6);
+  border-bottom: 1px solid #3b82f6;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(10px);
+}
+
+.global-control-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 0.95rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.38);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.72));
+  color: var(--accent);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 16px 32px rgba(14, 165, 233, 0.12);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.global-control-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(96, 165, 250, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 20px 40px rgba(14, 165, 233, 0.18);
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.96), rgba(30, 41, 59, 0.8));
+}
+
+.global-control-btn:active {
+  transform: translateY(0);
+}
+
+.global-control-btn i {
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+.global-control-btn span {
+  font-size: 0.98rem;
+}
+
+.page-section {
+  display: none;
+}
+
+.page-section.is-visible {
+  display: block;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.74));
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 1.4rem 1.5rem;
+  backdrop-filter: var(--blur);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0.08), transparent 42%, rgba(59, 130, 246, 0.08));
+  pointer-events: none;
+}
+
+.panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.panel:hover,
+.metric-card:hover,
+.asset-card:hover,
+.dynamic-section:hover,
+.bank-accounts-card:hover {
+  border-color: var(--panel-border-strong);
+  box-shadow: 0 0 32px rgba(103, 232, 249, 0.16), 0 24px 56px rgba(2, 6, 23, 0.62);
+}
+
+.form-panel,
+.results-panel {
+  min-width: 0;
+}
+
+.panel-heading h2 {
+  margin: 0;
+  font-size: 1.12rem;
+  letter-spacing: -0.01em;
+}
+
+.panel-heading p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.module-header h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.88rem;
+  color: #e0f2fe;
+}
+
+.section-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+}
+
+.bank-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+}
+
+.module-title {
+  margin: 0.2rem 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.84rem;
+  color: #f8fbff;
+}
+
+.results-panel-header,
+.archive-panel-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+}
+
+.results-panel-header .action-btn {
+  margin-top: 0.2rem;
+}
+
+.archive-status {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.finance-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.finance-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+
+.finance-form span {
+  color: var(--text);
+}
+
+.finance-form input,
+.dynamic-entry input,
+.mortgage-grid input,
+.asset-field-grid input,
+.asset-table input,
+.pea-table input,
+.bank-accounts-form input,
+.bank-balance-input,
+.crypto-add-controls input,
+.crypto-price-edit-input,
+.auto-transfer-label input,
+.checking-label input {
+  width: 100%;
+  min-height: 3.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-size: 0.96rem;
+  color: var(--text);
+  background: rgba(15, 23, 42, 0.72);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.finance-form input::placeholder,
+.dynamic-entry input::placeholder,
+.mortgage-grid input::placeholder,
+.asset-field-grid input::placeholder,
+.asset-table input::placeholder,
+.pea-table input::placeholder,
+.bank-accounts-form input::placeholder,
+.bank-balance-input::placeholder,
+.crypto-add-controls input::placeholder,
+.crypto-price-edit-input::placeholder,
+.auto-transfer-label input::placeholder,
+.checking-label input::placeholder,
+.ponctual-entry input::placeholder {
+  color: rgba(219, 234, 254, 0.55);
+}
+
+.finance-form input:focus,
+.dynamic-entry input:focus,
+.mortgage-grid input:focus,
+.asset-field-grid input:focus,
+.asset-table input:focus,
+.pea-table input:focus,
+.bank-accounts-form input:focus,
+.bank-balance-input:focus,
+.crypto-add-controls input:focus,
+.crypto-price-edit-input:focus,
+.auto-transfer-label input:focus {
+  border-color: rgba(103, 232, 249, 0.58);
+  box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.16);
+  background: rgba(15, 23, 42, 0.84);
+  transform: translateY(-1px);
+}
+
+.dynamic-sections-stack {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dynamic-section {
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.64));
+  backdrop-filter: blur(10px);
+}
+
+.dynamic-section-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 0.85rem;
+}
+
+.dynamic-section-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.dynamic-section-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.dynamic-section-header p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.section-add-btn {
+  padding: 0.8rem 1rem;
+  white-space: nowrap;
+}
+
+.dynamic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dynamic-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(120px, 0.8fr) minmax(90px, 0.55fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.dynamic-entry input[type='number'],
+.mortgage-grid input[type='number'] {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.dynamic-entry .danger-btn {
+  padding: 0.8rem 1rem;
+}
+
+.dynamic-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.pea-actions-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.pea-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.pea-action-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) 110px 120px 120px 110px 110px 90px auto;
+  gap: 0.75rem;
+  align-items: end;
+  padding: 0.9rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(59, 130, 246, 0.12);
+}
+
+.pea-action-row label,
+.pea-line-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pea-line-metrics {
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.pea-line-metrics strong {
+  color: var(--text);
+}
+
+.pea-summary-grid {
+  margin-top: 1rem;
+}
