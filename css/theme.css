@@ -199,7 +199,13 @@
   gap: 0.75rem;
   margin-bottom: 1rem;
 }
-.real-return-display { padding: 1rem; border-radius: 14px; }
+.real-return-display {
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  margin-top: 0.5rem;
+}
 .real-return-value {
   font-size: 1.4rem;
   font-weight: 800;

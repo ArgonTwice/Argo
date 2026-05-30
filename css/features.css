@@ -228,11 +228,16 @@
 .life-goal-card {
   padding: 1rem 1.1rem;
   border-radius: 16px;
-  background: linear-gradient(160deg, rgba(15,23,42,0.9), rgba(30,41,59,0.7));
-  border: 1px solid rgba(148,163,184,0.15);
+  background: linear-gradient(160deg, rgba(30,41,59,0.8), rgba(15,23,42,0.6));
+  border: 1px solid var(--panel-border);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.life-goal-card:hover {
+  border-color: var(--panel-border-strong);
+  box-shadow: 0 0 16px rgba(103, 232, 249, 0.1);
 }
 .life-goal-header {
   display: flex;
