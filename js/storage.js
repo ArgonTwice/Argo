@@ -1,4 +1,4 @@
-function normalizeCryptoAssets(items) {
+﻿function normalizeCryptoAssets(items) {
   if (!Array.isArray(items)) {
     return [];
   }
@@ -434,7 +434,7 @@ function exportDashboardBackup() {
     URL.revokeObjectURL(url);
     showToast('Sauvegarde exportée avec succès.');
   } catch {
-    showToast(‘Impossible d\’exporter la sauvegarde.’, ‘warning’);
+    showToast('Impossible d\'exporter la sauvegarde.', 'warning');
   }
 }
 
@@ -476,7 +476,7 @@ function importDashboardBackup(file) {
         window.location.reload();
       }, 300);
     } catch {
-      showToast(‘Impossible d\’importer la sauvegarde.’, ‘warning’);
+      showToast('Impossible d\'importer la sauvegarde.', 'warning');
     }
   };
 
