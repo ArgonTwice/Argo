@@ -45,12 +45,18 @@ function calculerRestant() {
   // Reste à vivre = revenus − obligations
   const remainingIncome = totalIncome - totalObligations;
 
-  const ccBase = parseAmount(checkingBalanceInput?.value);
-  const ccDynamic = ccBase + totalIncome - totalObligations;
-  updateCheckingSummary();
-  const projEl = document.getElementById('checkingProjected');
-  if (projEl) {
-    projEl.innerHTML = `<span class="cc-projected" style="display:block;color:${ccDynamic >= 0 ? '#34d399' : '#f87171'};font-weight:700">${formatCurrency(ccDynamic)}</span><span class="calc-detail">${formatCurrency(ccBase)} (actuel) + ${formatCurrency(totalIncome)} (entrées) − ${formatCurrency(totalObligations)} (sorties)</span>`;
+  const ccDynamic = totalIncome - totalObligations;
+  if (checkingBalanceInput && document.activeElement !== checkingBalanceInput) {
+    checkingBalanceInput.value = ccDynamic.toFixed(2);
+    checkingBalance = ccDynamic;
+    saveCheckingBalance();
+  }
+  if (checkingBalanceInput) {
+    checkingBalanceInput.style.color = ccDynamic >= 0 ? '#34d399' : '#f87171';
+  }
+  const ccDetailEl = document.getElementById('checkingCalcDetail');
+  if (ccDetailEl) {
+    ccDetailEl.textContent = `${formatCurrency(totalIncome)} (entrées) − ${formatCurrency(totalObligations)} (sorties)`;
   }
 
   const savingCapacity = remainingIncome * 0.15;
@@ -545,11 +551,18 @@ function bindPonctualsListeners() {
   if (checkingBalanceInput) {
     checkingBalanceInput.addEventListener('input', () => {
       checkingBalance = parseFloat(checkingBalanceInput.value) || 0;
-      updateCheckingSummary();
       saveCheckingBalance();
       updateTotalPatrimony();
       calculerRestant();
       updateForecast();
+    });
+
+    checkingBalanceInput.addEventListener('blur', () => {
+      saveCheckingBalance();
+    });
+
+    checkingBalanceInput.addEventListener('focus', () => {
+      checkingBalanceInput.style.color = 'var(--text)';
     });
   }
 }
