@@ -86,29 +86,6 @@ function bindTransferPresets() {
   });
 }
 
-function updateRealReturn() {
-  const inflation   = parseAmount(document.getElementById('currentInflationRate')?.value);
-  const livretRate  = parseAmount(document.getElementById('carrefourInterest')?.value);
-
-  // Synchronise l'affichage du taux livret (readonly)
-  const livretDisplay = document.getElementById('livretRateDisplay');
-  if (livretDisplay) livretDisplay.value = livretRate;
-
-  const realReturn = livretRate - inflation;
-  const el = document.getElementById('realReturnDisplay');
-  if (!el) return;
-
-  const sign = realReturn >= 0 ? '+' : '';
-  el.innerHTML = `
-    <p class="real-return-value ${realReturn >= 0 ? 'positive' : 'negative'}">
-      Rendement réel : ${sign}${realReturn.toFixed(2)}%
-    </p>
-    <p class="real-return-hint">
-      ${realReturn >= 0
-        ? '✓ Ton épargne préserve son pouvoir d\'achat.'
-        : '⚠ Ton épargne perd ' + Math.abs(realReturn).toFixed(2) + '% de valeur par an. Investir est nécessaire.'}
-    </p>`;
-}
 
 function setActiveSection(sectionKey) {
   document.querySelectorAll('.page-section').forEach((section) => {
@@ -546,7 +523,7 @@ function launchSplash() {
   const splash = document.getElementById('splashScreen');
   if (!splash) return;
 
-  // ─── prefers-reduced-motion : splash statique + fondu 0.5s ──────
+  // ── prefers-reduced-motion : statique + fondu 0.5s ───────
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const tEl = splash.querySelector('.splash-title');
     const sEl = splash.querySelector('.splash-sub');
@@ -562,10 +539,12 @@ function launchSplash() {
     return;
   }
 
-  // ─── Fallback iOS Safari sans Web Animations API ─────────────
+  // ── Fallback : Web Animations API absent ─────────────────
   if (!Element.prototype.animate) {
     const tEl = splash.querySelector('.splash-title');
     const sEl = splash.querySelector('.splash-sub');
+    const iEl = splash.querySelector('.splash-icon');
+    if (iEl) iEl.style.opacity = '1';
     if (tEl) {
       const chars = [...tEl.textContent.trim()];
       tEl.textContent = '';
@@ -573,24 +552,24 @@ function launchSplash() {
       chars.forEach((ch, i) => {
         const span = document.createElement('span');
         span.className = 'splash-title-letter';
-        span.style.animationDelay = `${0.4 + i * 0.1}s`;
+        span.style.animationDelay = `${0.2 + i * 0.1}s`;
         span.textContent = ch;
         tEl.appendChild(span);
       });
     }
-    if (sEl) sEl.style.animationDelay = '1s';
+    if (sEl) sEl.style.animationDelay = '0.8s';
     splash.classList.add('splash-fallback');
     setTimeout(() => {
       splash.classList.add('splash-hide');
       setTimeout(() => { if (splash.parentNode) splash.remove(); }, 600);
-    }, 2400);
+    }, 1000);
     return;
   }
 
-  const GOLD      = ['#fcd34d','#f59e0b','#fbbf24','#fef3c7','#fde68a','#d97706'];
-  const W         = window.innerWidth;
-  const H         = window.innerHeight;
-  const fallDist  = H + 140;
+  const GOLD     = ['#fcd34d','#f59e0b','#fbbf24','#fef3c7','#fde68a','#d97706'];
+  const W        = window.innerWidth;
+  const H        = window.innerHeight;
+  const fallDist = H + 140;
 
   const starsCont  = document.getElementById('splashStars');
   const partCont   = document.getElementById('splashParticles');
@@ -602,14 +581,10 @@ function launchSplash() {
   const subEl      = splash.querySelector('.splash-sub');
   const iconEl     = splash.querySelector('.splash-icon');
 
-  // Dimensions du bateau (CSS clamp reproduit en JS)
   const shipW      = Math.min(200, Math.max(120, W * 0.28));
   const shipCenterX = Math.round((W - shipW) / 2);
 
-  // ═══════════════════════════════════════════════════════════════
-  // ACTE 1 (0–800ms) : horizon + étoiles qui s'allument
-  // ═══════════════════════════════════════════════════════════════
-
+  // ── 0ms : fond + étoiles ─────────────────────────────────
   if (horizLine) {
     horizLine.animate(
       [{ opacity: 0 }, { opacity: 1 }],
@@ -622,63 +597,98 @@ function launchSplash() {
       const star = document.createElement('div');
       star.className = 'splash-star';
       const sz = (1 + Math.random() * 2.5).toFixed(1);
-      star.style.cssText = `left:${(Math.random()*100).toFixed(1)}%;top:${(2+Math.random()*60).toFixed(1)}%;width:${sz}px;height:${sz}px`;
+      star.style.cssText = `left:${(Math.random()*100).toFixed(1)}%;top:${(2+Math.random()*55).toFixed(1)}%;width:${sz}px;height:${sz}px`;
       starsCont.appendChild(star);
       const peak = 0.5 + Math.random() * 0.5;
       star.animate(
         [{ opacity: 0 }, { opacity: peak }, { opacity: peak * 0.25 }],
-        { duration: 900 + Math.random()*1600, delay: Math.random()*650,
+        { duration: 900 + Math.random()*1600, delay: Math.random()*400,
           iterations: Infinity, easing: 'ease-in-out', direction: 'alternate' }
       );
     }
-    // Libère la mémoire GPU une fois l'acte 1 terminé
     setTimeout(() => {
-      starsCont.querySelectorAll('.splash-star').forEach((s) => {
-        s.style.willChange = 'auto';
-      });
-    }, 650);
+      starsCont.querySelectorAll('.splash-star').forEach(s => { s.style.willChange = 'auto'; });
+    }, 500);
   }
 
-  // ═══════════════════════════════════════════════════════════════
-  // ACTE 2 (600–1700ms) : l'Argo entre, décélère, s'immobilise
-  // ═══════════════════════════════════════════════════════════════
-
-  if (ship) {
-    ship.animate(
-      [
-        { transform: 'translateX(-200px)' },
-        { transform: `translateX(${Math.round(shipCenterX * 0.55)}px)`, offset: 0.56 },
-        { transform: `translateX(${shipCenterX}px)` },
-      ],
-      { duration: 1100, delay: 600, fill: 'both', easing: 'ease-out' }
+  // ── 400ms : logo fade in (scale 0.8 → 1) ─────────────────
+  if (iconEl) {
+    iconEl.animate(
+      [{ opacity: 0, transform: 'scale(0.8)' }, { opacity: 1, transform: 'scale(1)' }],
+      { duration: 380, delay: 400, fill: 'forwards', easing: 'cubic-bezier(0.34,1.56,0.64,1)' }
     );
   }
 
+  // ── 800ms : titre ARGO lettre par lettre ─────────────────
+  if (titleEl) {
+    const chars = [...titleEl.textContent.trim()];
+    titleEl.textContent = '';
+    titleEl.style.opacity = '1';
+    chars.forEach((ch, i) => {
+      const span = document.createElement('span');
+      span.className = 'splash-title-letter';
+      span.textContent = ch;
+      titleEl.appendChild(span);
+      span.animate(
+        [
+          { opacity: 0, transform: 'translateY(22px)' },
+          { opacity: 1, transform: 'translateY(0)' },
+        ],
+        { duration: 280, delay: 800 + i * 90, fill: 'forwards',
+          easing: 'cubic-bezier(0.34,1.56,0.64,1)' }
+      );
+    });
+  }
+
+  // ── 1400ms : devise fade in ───────────────────────────────
+  if (subEl) {
+    subEl.animate(
+      [
+        { opacity: 0, transform: 'translateY(10px)' },
+        { opacity: 0.82, transform: 'translateY(0)' },
+      ],
+      { duration: 420, delay: 1400, fill: 'forwards', easing: 'ease-out' }
+    );
+  }
+
+  // ── 1600ms : bateau entre depuis la gauche ────────────────
+  if (ship) {
+    ship.animate(
+      [
+        { transform: 'translateX(-220px)' },
+        { transform: `translateX(${Math.round(shipCenterX * 0.55)}px)`, offset: 0.56 },
+        { transform: `translateX(${shipCenterX}px)` },
+      ],
+      { duration: 1100, delay: 1600, fill: 'both', easing: 'ease-out' }
+    );
+  }
+
+  // ── 1600ms : tangue en continu ────────────────────────────
   if (shipInner) {
     shipInner.animate(
       [
-        { transform: 'translateY(0px)   rotate(0deg)'    },
-        { transform: 'translateY(-7px)  rotate(1.2deg)'  },
-        { transform: 'translateY(2px)   rotate(-0.4deg)' },
-        { transform: 'translateY(0px)   rotate(0deg)'    },
+        { transform: 'translateY(0px) rotate(0deg)' },
+        { transform: 'translateY(-7px) rotate(1.2deg)' },
+        { transform: 'translateY(2px) rotate(-0.4deg)' },
+        { transform: 'translateY(0px) rotate(0deg)' },
       ],
-      { duration: 2800, delay: 600, iterations: Infinity, easing: 'ease-in-out' }
+      { duration: 2800, delay: 1600, iterations: Infinity, easing: 'ease-in-out' }
     );
   }
 
   if (reflection) {
     reflection.animate(
       [{ opacity: 0 }, { opacity: 0.2 }],
-      { duration: 400, delay: 1600, fill: 'both', easing: 'ease-in' }
+      { duration: 400, delay: 2600, fill: 'both', easing: 'ease-in' }
     );
   }
 
-  // Spray à l'entrée de la proue (t=600ms)
-  const sprayY = Math.round(H * 0.71);
+  // ── Spray à l'entrée (t=1600ms) ──────────────────────────
+  const sprayY = Math.round(H * 0.72);
   for (let i = 0; i < 8; i++) {
     const s  = document.createElement('div');
     const sz = +(2 + Math.random() * 3).toFixed(1);
-    const tx = +(6  + Math.random() * 22);
+    const tx = +(6 + Math.random() * 22);
     const ty = +(12 + Math.random() * 28);
     s.style.cssText = [
       'position:fixed',
@@ -692,15 +702,15 @@ function launchSplash() {
     splash.appendChild(s);
     s.animate(
       [
-        { transform: 'translate(0,0)',                                              opacity: 0   },
+        { transform: 'translate(0,0)', opacity: 0 },
         { transform: `translate(${+(tx*0.3).toFixed(1)}px,${-(ty*0.35).toFixed(1)}px)`, opacity: 0.8, offset: 0.2 },
-        { transform: `translate(${tx.toFixed(1)}px,${(-ty).toFixed(1)}px)`,         opacity: 0   },
+        { transform: `translate(${tx.toFixed(1)}px,${(-ty).toFixed(1)}px)`, opacity: 0 },
       ],
-      { duration: 480 + Math.random() * 260, delay: 600, fill: 'both', easing: 'ease-out' }
+      { duration: 480 + Math.random() * 260, delay: 1600, fill: 'both', easing: 'ease-out' }
     );
   }
 
-  // Particules dorées — la Toison d'Or (max 15)
+  // ── Particules dorées, max 15 ─────────────────────────────
   if (partCont) {
     for (let i = 0; i < 15; i++) {
       const p   = document.createElement('div');
@@ -708,7 +718,7 @@ function launchSplash() {
       const sz  = (3 + Math.random() * 9).toFixed(1);
       const lft = (-4 + Math.random() * 108).toFixed(1);
       const dur = 2200 + Math.random() * 1600;
-      const dly = 650  + Math.random() * 900;
+      const dly = 1600 + Math.random() * 900;
       const dx  = ((Math.random() - 0.5) * 140).toFixed(1);
       const rot = ((Math.random() - 0.5) * 220).toFixed(1);
       const op  = 0.5 + Math.random() * 0.5;
@@ -717,89 +727,32 @@ function launchSplash() {
       partCont.appendChild(p);
       p.animate(
         [
-          { transform: 'translateX(0) translateY(0) rotate(0deg)',                                    opacity: 0  },
-          { transform: 'translateX(0) translateY(0) rotate(0deg)',                                    opacity: op, offset: 0.05 },
+          { transform: 'translateX(0) translateY(0) rotate(0deg)', opacity: 0 },
+          { transform: 'translateX(0) translateY(0) rotate(0deg)', opacity: op, offset: 0.05 },
           { transform: `translateX(${dx*0.6}px) translateY(${(fallDist*0.85).toFixed(0)}px) rotate(${rot*0.7}deg)`, opacity: op, offset: 0.87 },
-          { transform: `translateX(${dx}px)      translateY(${fallDist}px)                 rotate(${rot}deg)`,       opacity: 0  },
+          { transform: `translateX(${dx}px) translateY(${fallDist}px) rotate(${rot}deg)`, opacity: 0 },
         ],
         { duration: dur, delay: dly, fill: 'both', easing: 'linear' }
       );
     }
   }
 
-  // ═══════════════════════════════════════════════════════════════
-  // ACTE 3 : titre lettre par lettre + devise — déclenché après fonts.ready
-  // ═══════════════════════════════════════════════════════════════
-
-  const t0 = performance.now();
-
-  const startAct3 = () => {
-    const base = Math.max(0, 1800 - (performance.now() - t0));
-
-    if (iconEl) {
-      iconEl.animate(
-        [{ opacity: 0, transform: 'scale(0.6)' }, { opacity: 1, transform: 'scale(1)' }],
-        { duration: 380, delay: base, fill: 'forwards', easing: 'cubic-bezier(0.34,1.56,0.64,1)' }
-      );
-    }
-
-    if (titleEl) {
-      const chars = [...titleEl.textContent.trim()];
-      titleEl.textContent = '';
-      titleEl.style.opacity = '1';
-      chars.forEach((ch, i) => {
-        const span = document.createElement('span');
-        span.className = 'splash-title-letter';
-        span.textContent = ch;
-        titleEl.appendChild(span);
-        span.animate(
-          [
-            { opacity: 0, transform: 'translateY(22px)' },
-            { opacity: 1, transform: 'translateY(0)'    },
-          ],
-          { duration: 280, delay: base + i * 90, fill: 'forwards',
-            easing: 'cubic-bezier(0.34,1.56,0.64,1)' }
-        );
-      });
-    }
-
-    if (subEl) {
-      subEl.animate(
-        [
-          { opacity: 0,    transform: 'translateY(10px)' },
-          { opacity: 0.82, transform: 'translateY(0)'    },
-        ],
-        { duration: 420, delay: base + 600, fill: 'forwards', easing: 'ease-out' }
-      );
-    }
-
-    // Fermeture 1 100ms après la fin de l'acte 3
-    setTimeout(() => {
-      if (splash.parentNode) {
-        splash.classList.add('splash-hide');
-        splash.addEventListener('transitionend', () => splash.remove(), { once: true });
-        setTimeout(() => { if (splash.parentNode) splash.remove(); }, 700);
-      }
-    }, base + 1100);
-  };
-
-  // Déclenche acte 3 à 1800ms — attend les polices si nécessaire
-  const SPLASH_MAX = 3800;
-  setTimeout(() => {
-    if (document.fonts.check("800 1em 'Poppins'")) {
-      startAct3();
-    } else {
-      document.fonts.ready.then(startAct3);
-    }
-  }, 1800);
-
-  // Timeout de sécurité absolu
+  // ── 3800ms : fondu vers l'app ─────────────────────────────
   setTimeout(() => {
     if (splash.parentNode) {
       splash.classList.add('splash-hide');
-      setTimeout(() => { if (splash.parentNode) splash.remove(); }, 400);
+      splash.addEventListener('transitionend', () => splash.remove(), { once: true });
+      setTimeout(() => { if (splash.parentNode) splash.remove(); }, 700);
     }
-  }, SPLASH_MAX);
+  }, 3800);
+
+  // ── 5000ms : timeout de sécurité absolu ──────────────────
+  setTimeout(() => {
+    if (splash.parentNode) {
+      splash.style.transition = 'none';
+      splash.remove();
+    }
+  }, 5000);
 }
 
 // ─── HERO BAR ────────────────────────────────────────────────
@@ -1004,7 +957,7 @@ function renderProfilePicker(registry, activeId) {
   listEl.innerHTML = registry.map(u => `
     <div class="profile-list-item${u.id === activeId ? ' profile-list-item-active' : ''}">
       <span class="profile-emoji">${u.emoji || '👤'}</span>
-      <span class="profile-name">${escapeHtml(u.name)}</span>
+      <span class="profile-name${u.id === activeId ? ' profile-name-editable' : ''}" ${u.id === activeId ? `data-uid="${u.id}" title="Cliquer pour renommer"` : ''}>${escapeHtml(u.name)}</span>
       ${u.id === activeId
         ? '<span class="profile-badge-active">Actif</span>'
         : `<button type="button" class="action-btn profile-switch-btn" data-uid="${u.id}">Choisir</button>`}
@@ -1017,6 +970,34 @@ function renderProfilePicker(registry, activeId) {
   });
   listEl.querySelectorAll('.profile-del-btn').forEach(btn => {
     btn.addEventListener('click', () => deleteUser(btn.dataset.uid, registry, activeId));
+  });
+
+  listEl.querySelectorAll('.profile-name-editable').forEach(span => {
+    span.addEventListener('click', () => {
+      const uid = span.dataset.uid;
+      const currentName = span.textContent;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = currentName;
+      input.className = 'profile-name-input';
+      span.replaceWith(input);
+      input.focus();
+      input.select();
+      const save = () => {
+        const newName = input.value.trim() || currentName;
+        const reg = JSON.parse(localStorage.getItem(USERS_REGISTRY_KEY) || '[]');
+        const user = reg.find(u => u.id === uid);
+        if (user) {
+          user.name = newName;
+          localStorage.setItem(USERS_REGISTRY_KEY, JSON.stringify(reg));
+        }
+        const nameEl = document.getElementById('activeProfileName');
+        if (nameEl) nameEl.textContent = newName;
+        renderProfilePicker(reg, localStorage.getItem(ACTIVE_USER_KEY));
+      };
+      input.addEventListener('blur', save);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
+    });
   });
 }
 

@@ -8,10 +8,10 @@ function createChargesChart() {
   chargesChart = new Chart(canvas, {
     type: 'doughnut',
     data: {
-      labels: ['PEA', 'Crypto', 'Natixis', 'Carrefour', 'Banque'],
+      labels: ['PEA', 'Crypto', 'Natixis', 'Banque'],
       datasets: [{
-        data: [0, 0, 0, 0, 0],
-        backgroundColor: ['#00d4ff', '#3b82f6', '#1e293b', '#60a5fa', '#34d399'],
+        data: [0, 0, 0, 0],
+        backgroundColor: ['#00d4ff', '#3b82f6', '#1e293b', '#34d399'],
         borderColor: 'rgba(15, 23, 42, 0.98)',
         borderWidth: 2,
         hoverOffset: 6,
@@ -177,7 +177,7 @@ function updateHomeCharts() {
 
   if (chargesChart) {
     const breakdown = getInvestmentBreakdown();
-    chargesChart.data.datasets[0].data = [breakdown.pea, breakdown.crypto, breakdown.natixis, breakdown.carrefour, breakdown.banque];
+    chargesChart.data.datasets[0].data = [breakdown.pea, breakdown.crypto, breakdown.natixis, breakdown.banque];
     chargesChart.update();
   }
 
@@ -242,7 +242,7 @@ function createOrUpdateSixMonthChart() {
   });
 }
 
-// ─── GRAPHIQUE DONUT BUDGET ──────────────────────────────────
+// ─── GRAPHIQUE BARRES BUDGET ─────────────────────────────────
 let budgetDonutChart = null;
 function updateBudgetDonutChart() {
   const canvas = document.getElementById('budgetDonutChart');
@@ -256,7 +256,7 @@ function updateBudgetDonutChart() {
 
   const labels = ['Charges fixes', 'Dépenses perso', 'Courses'];
   const data = [fixed, perso, grocery];
-  const colors = ['#38bdf8', '#f472b6', '#34d399'];
+  const colors = ['#00d4ff', '#f472b6', '#34d399'];
 
   if (legendEl) {
     legendEl.innerHTML = labels.map((l, i) => {
@@ -275,18 +275,62 @@ function updateBudgetDonutChart() {
     return;
   }
 
+  const barLabelPlugin = {
+    id: 'budgetBarLabels',
+    afterDatasetsDraw(chart) {
+      const { ctx, data: d } = chart;
+      const tot = d.datasets[0].data.reduce((a, b) => a + b, 0);
+      chart.getDatasetMeta(0).data.forEach((bar, i) => {
+        const val = d.datasets[0].data[i];
+        if (val <= 0) return;
+        const pct = tot > 0 ? ((val / tot) * 100).toFixed(1) : '0.0';
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#dbeafe';
+        ctx.font = '600 11px Poppins, sans-serif';
+        ctx.fillText(formatCurrency(val), bar.x, bar.y - 18);
+        ctx.font = '500 10px Poppins, sans-serif';
+        ctx.fillStyle = 'rgba(219,234,254,0.65)';
+        ctx.fillText(`${pct}%`, bar.x, bar.y - 4);
+        ctx.restore();
+      });
+    }
+  };
+
   budgetDonutChart = new Chart(canvas, {
-    type: 'doughnut',
+    type: 'bar',
     data: {
       labels,
-      datasets: [{ data, backgroundColor: colors, borderColor: 'rgba(15,23,42,0.95)', borderWidth: 2, hoverOffset: 5 }]
+      datasets: [{
+        data,
+        backgroundColor: ['rgba(0,212,255,0.65)', 'rgba(244,114,182,0.65)', 'rgba(52,211,153,0.65)'],
+        borderColor: colors,
+        borderWidth: 2,
+        borderRadius: 8,
+        barThickness: 64,
+      }]
     },
     options: {
-      responsive: true, maintainAspectRatio: false, cutout: '62%',
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 32 } },
       plugins: {
         legend: { display: false },
         tooltip: { callbacks: { label: ctx => `${ctx.label}: ${formatCurrency(Number(ctx.raw))}` } }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#dbeafe', font: { family: 'Poppins, sans-serif', size: 12 } },
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          border: { color: 'transparent' }
+        },
+        y: {
+          ticks: { color: '#dbeafe', font: { family: 'Poppins, sans-serif', size: 11 }, callback: v => formatCurrency(v) },
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          border: { color: 'transparent' }
+        }
       }
-    }
+    },
+    plugins: [barLabelPlugin]
   });
 }

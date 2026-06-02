@@ -156,22 +156,6 @@ function normalizeNatixisPlacements(items) {
   }));
 }
 
-function normalizeCarrefourLivret(data) {
-  const history = Array.isArray(data?.history)
-    ? data.history.map((entry) => ({
-        month: typeof entry?.month === 'string' ? entry.month : '',
-        balance: parseAmount(entry?.balance),
-        interest: parseAmount(entry?.interest),
-      }))
-    : [];
-
-  return {
-    currentBalance: parseAmount(data?.currentBalance),
-    rate: parseAmount(data?.rate),
-    history,
-  };
-}
-
 function getSavedFixedCharges(parsedData) {
   if (Array.isArray(parsedData.fixedCharges) && parsedData.fixedCharges.length) {
     return normalizeDynamicItems(parsedData.fixedCharges);
@@ -243,7 +227,6 @@ function normalizeStoredInvestmentsData(data) {
     cryptoAssets: normalizeCryptoAssets(Array.isArray(data.cryptoAssets) ? data.cryptoAssets : []),
     peaActions: normalizePeaActions(data.peaActions),
     natixisPlacements: normalizeNatixisPlacements(data.natixisPlacements),
-    carrefourLivret: normalizeCarrefourLivret(data.carrefourLivret),
   };
 }
 
@@ -271,8 +254,7 @@ function loadSectionSnapshot(sectionKey) {
   try {
     const parsed = JSON.parse(rawData);
     return parsed && typeof parsed === 'object' ? parsed : null;
-  } catch (error) {
-    console.warn(`Impossible de charger le snapshot de la section ${sectionKey}.`, error);
+  } catch {
     return null;
   }
 }
@@ -288,7 +270,6 @@ function saveMainStorageSnapshot() {
   formData.groceryExpenses = dynamicSections.groceryExpenses;
   formData.peaActions = peaActions;
   formData.natixisPlacements = natixisPlacements;
-  formData.carrefourLivret = carrefourLivret;
   formData.bankAccounts = bankAccounts;
   formData.ponctuels = ponctuels;
   formData.checkingBalance = checkingBalance;
@@ -311,7 +292,6 @@ function saveSectionStorageSnapshot() {
       cryptoAssets,
       peaActions,
       natixisPlacements,
-      carrefourLivret,
     })
   );
 
@@ -346,7 +326,6 @@ function loadSavedData() {
   dynamicSections = { ...DEFAULT_DYNAMIC_SECTIONS };
   peaActions = [];
   natixisPlacements = [];
-  carrefourLivret = { currentBalance: 0, rate: 0, history: [] };
   bankAccounts = [];
   loadManualTransfer();
 
@@ -359,8 +338,7 @@ function loadSavedData() {
           field.value = parsedData[key];
         }
       });
-    } catch (error) {
-      console.warn('Impossible de charger les donnees sauvegardees.', error);
+    } catch {
       parsedData = null;
     }
   }
@@ -382,12 +360,10 @@ function loadSavedData() {
       cryptoAssets = normalizedInvestments.cryptoAssets;
       peaActions = normalizedInvestments.peaActions;
       natixisPlacements = normalizedInvestments.natixisPlacements;
-      carrefourLivret = normalizedInvestments.carrefourLivret;
     }
   } else if (parsedData) {
     peaActions = normalizePeaActions(parsedData.peaActions);
     natixisPlacements = normalizeNatixisPlacements(parsedData.natixisPlacements);
-    carrefourLivret = normalizeCarrefourLivret(parsedData.carrefourLivret);
 
     if (Array.isArray(parsedData.cryptoAssets) && parsedData.cryptoAssets.length) {
       cryptoAssets = normalizeCryptoAssets(parsedData.cryptoAssets);
@@ -457,9 +433,8 @@ function exportDashboardBackup() {
     link.remove();
     URL.revokeObjectURL(url);
     showToast('Sauvegarde exportée avec succès.');
-  } catch (error) {
-    console.error('Erreur lors de l’export de la sauvegarde.', error);
-    showToast('Impossible d’exporter la sauvegarde.', 'warning');
+  } catch {
+    showToast(‘Impossible d\’exporter la sauvegarde.’, ‘warning’);
   }
 }
 
@@ -500,9 +475,8 @@ function importDashboardBackup(file) {
       window.setTimeout(() => {
         window.location.reload();
       }, 300);
-    } catch (error) {
-      console.error('Erreur lors de l’import de la sauvegarde.', error);
-      showToast('Impossible d’importer la sauvegarde.', 'warning');
+    } catch {
+      showToast(‘Impossible d\’importer la sauvegarde.’, ‘warning’);
     }
   };
 

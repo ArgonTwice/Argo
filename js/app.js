@@ -7,7 +7,6 @@ function initializeApp() {
   bindDynamicSectionListeners();
   bindPeaActionsListeners();
   bindNatixisListeners();
-  bindCarrefourListeners();
   bindBankAccountsListeners();
   bindResetSectionButtons();
   bindBackupControls();
@@ -16,7 +15,6 @@ function initializeApp() {
   renderAllDynamicSections();
   renderPeaActions();
   renderNatixisTable();
-  renderCarrefourHistory();
   renderBankAccountsTable();
   updateDashboard();
   updateMortgageTable();
@@ -94,8 +92,6 @@ window.addEventListener('load', () => {
   bindBudgetAlerts();
   initSearch();
   registerSW();
-  document.getElementById('currentInflationRate')
-    ?.addEventListener('input', updateRealReturn);
   bindFeesSimulator();
   bindCompoundSimulator();
   bindBudgetCatsForm();

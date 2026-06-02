@@ -12,7 +12,6 @@ const SECTION_STORAGE_KEYS = {
 const SPECIFIC_RESET_STORAGE_KEYS = {
   chargesFixesData: 'chargesFixesData',
   depensesPersoData: 'depensesPersoData',
-  livretCarrefourData: 'livretCarrefourData',
   natixisData: 'natixisData',
   peaData: 'peaData',
   cryptoData: 'cryptoData',
@@ -20,7 +19,6 @@ const SPECIFIC_RESET_STORAGE_KEYS = {
 const SPECIFIC_RESET_LABELS = {
   chargesFixesData: 'Charges fixes & abonnements',
   depensesPersoData: 'Dépenses personnelles',
-  livretCarrefourData: 'Livret Carrefour',
   natixisData: 'Portfolio Natixis',
   peaData: 'PEA Actions',
   cryptoData: 'Crypto',
@@ -73,13 +71,6 @@ const peaTotalGainPercentEl = document.getElementById('peaTotalGainPercent');
 const addNatixisButton = document.getElementById('addNatixisButton');
 const natixisTableBody = document.getElementById('natixisTableBody');
 const natixisTotalValueEl = document.getElementById('natixisTotalValue');
-const carrefourCurrentBalanceInput = document.getElementById('carrefourCurrentBalance');
-const carrefourInterestEl = document.getElementById('carrefourInterest');
-const carrefourHistoryDateInput = document.getElementById('carrefourHistoryDate');
-const carrefourHistoryBalanceInput = document.getElementById('carrefourHistoryBalance');
-const addCarrefourMonthButton = document.getElementById('addCarrefourMonthButton');
-const carrefourHistoryBody = document.getElementById('carrefourHistoryBody');
-
 const fixedChargesList = document.getElementById('fixedChargesList');
 const personalExpensesList = document.getElementById('personalExpensesList');
 const groceryExpensesList = document.getElementById('groceryExpensesList');
@@ -155,11 +146,6 @@ let cryptoAssets = [];
 let dynamicSections = { ...DEFAULT_DYNAMIC_SECTIONS };
 let peaActions = [];
 let natixisPlacements = [];
-let carrefourLivret = {
-  currentBalance: 0,
-  rate: 0,
-  history: [],
-};
 let monthlyArchives = [];
 let bankAccounts = [];
 let ponctuels = [];

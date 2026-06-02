@@ -64,10 +64,21 @@
 
 
 @media (max-width: 768px) {
-  /* Layout gÃ©nÃ©ral */
-  .app-shell { padding: 1rem 0 5rem; }
+  /* Layout général */
+  body { overflow-x: hidden; max-width: 100vw; }
+  .app-shell { padding: 0.75rem 0.75rem 90px; width: 100%; overflow-x: hidden; }
   .dashboard-grid { grid-template-columns: 1fr; }
-  .panel { padding: 1rem; }
+  .panel { padding: clamp(0.75rem, 3vw, 1.2rem); }
+
+  /* Hero bar — stacking vertical sur mobile */
+  .home-hero-bar { flex-direction: column; align-items: stretch; gap: 0.4rem; padding: 0.85rem 1rem; }
+  .home-hero-item { flex-direction: row; justify-content: space-between; align-items: center; padding: 0.2rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .home-hero-item:last-child { border-bottom: none; }
+  .home-hero-val { font-size: clamp(0.95rem, 4vw, 1.15rem); }
+
+  /* Panel-header avec bouton — empêche l'overlap */
+  .results-panel-header { flex-wrap: wrap; gap: 0.5rem; }
+  .results-panel-header .action-btn { width: auto; min-height: 40px; font-size: 0.82rem; padding: 0.4rem 0.9rem; }
 
   /* Header */
   .topbar { flex-direction: column; gap: 0.3rem; }
@@ -98,7 +109,6 @@
 
   /* Formulaires */
   .finance-form label,
-  .dynamic-entry,
   .treasury-form,
   .bank-accounts-form,
   .mortgage-grid,
@@ -106,20 +116,139 @@
   .crypto-add-controls,
   .goals-form { grid-template-columns: 1fr; }
 
+  /* Charges fixes — colonne unique */
+  .dynamic-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: clamp(0.75rem, 3vw, 1.2rem);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .dynamic-entry label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 100%;
+  }
+  .dynamic-entry label span {
+    font-size: clamp(0.65rem, 2.2vw, 0.82rem);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .dynamic-entry input {
+    width: 100% !important;
+    min-height: 52px !important;
+    font-size: 16px !important;
+    padding: 0.6rem 0.8rem !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
+  }
+  .dynamic-entry-amounts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .dynamic-entry-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 0.2rem;
+  }
+  .dynamic-entry .danger-btn,
+  .dynamic-entry .icon-btn {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    width: 2.75rem;
+    flex-shrink: 0;
+  }
+
+  /* Avatar profil */
+  .profile-avatar,
+  .user-avatar,
+  [class*="avatar"],
+  [class*="profile-pic"] {
+    position: static !important;
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    flex-shrink: 0;
+  }
+  .panel,
+  .asset-card,
+  .dynamic-section,
+  .app-shell {
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  body { overflow-x: hidden !important; max-width: 100vw !important; }
+
+  /* Récurrent checkbox */
+  [class*="recurrent"],
+  [class*="recurring"],
+  .recurrent-btn,
+  label[for*="recur"] {
+    font-size: 0.72rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+  }
+
   /* Boutons */
-  .action-btn { min-height: 48px; }
-  .goals-add-btn,
-  .budget-cat-add-btn,
-  .section-add-btn { width: 100%; }
+  .action-btn {
+    width: 100%;
+    max-width: 100%;
+    min-height: 52px;
+    font-size: 0.95rem;
+    border-radius: 14px;
+  }
+  .asset-table .action-btn,
+  .asset-table .danger-btn,
+  .pea-table .action-btn,
+  .pea-table .danger-btn {
+    width: auto;
+    min-height: 36px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.78rem;
+  }
+  /* Boutons dans les headers de section — jamais full-width */
+  .section-add-btn,
+  .dynamic-section-actions .action-btn {
+    width: auto;
+    min-height: 40px;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.85rem;
+  }
+  .dynamic-section-header { flex-wrap: wrap; }
+  .dynamic-section-actions { flex-shrink: 0; }
   .reset-section-btn { min-height: 44px; min-width: 44px; }
 
-  /* Tableaux â€” scroll horizontal */
+  /* Tableaux — scroll horizontal */
   .asset-table-wrap,
   .mortgage-table-wrap,
-  .archive-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .asset-table,
+  .archive-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+  }
+  .asset-table { min-width: 520px; font-size: 0.78rem; }
   .mortgage-table,
   .archive-table { min-width: 480px; }
+  .asset-table th,
+  .asset-table td { padding: 0.5rem 0.4rem; white-space: nowrap; }
+  .asset-table input {
+    min-width: 70px;
+    max-width: 100px;
+    font-size: 14px !important;
+    padding: 0.4rem 0.5rem;
+  }
   th, td { font-size: 0.78rem; padding: 0.55rem 0.45rem; }
 
   /* Graphiques */
@@ -172,7 +301,13 @@
   .nav-link { flex-shrink: 0; }
 
   /* Auto-transfer presets */
-  .transfer-presets { grid-template-columns: 1fr 1fr; }
+  .transfer-presets { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .transfer-preset-btn { min-height: 52px; font-size: 0.82rem; padding: 0.5rem; }
+
+  /* Hero — débordement */
+  .summary-hero,
+  .hero-stats { display: flex; flex-direction: column; gap: 0.75rem; overflow: hidden; }
+  .summary-hero h2 { font-size: clamp(1.6rem, 6vw, 2rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Mortgage impact */
   .mortgage-impact-box { padding: 1rem; }
@@ -182,14 +317,24 @@
 }
 
 @media (max-width: 480px) {
-  /* IcÃ´nes seules sur les boutons sauvegarde */
+  /* Icônes seules sur les boutons sauvegarde */
   .global-control-btn span { display: none; }
   .global-control-btn i { font-size: 1.15rem; }
   .global-control-btn { padding: 0.6rem; }
 
-  /* Metric cards en colonne sur trÃ¨s petit Ã©cran */
+  /* Metric cards en colonne sur très petit écran */
   .results-grid { grid-template-columns: 1fr; }
-  .metric-card strong { font-size: 1.5rem; }
+  .metric-card strong { font-size: clamp(1.4rem, 5.5vw, 2rem); }
+}
+
+/* ── Container Queries — dynamic-entry ── */
+@container (max-width: 400px) {
+  .dynamic-entry {
+    flex-direction: column;
+  }
+  .dynamic-entry input {
+    width: 100%;
+  }
 }
 
 

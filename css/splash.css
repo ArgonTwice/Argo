@@ -1,11 +1,4 @@
-﻿
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SPLASH SCREEN â€” Argo, cap sur votre toison d'or
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SPLASH SCREEN ARGO â€” scÃ©nario 3 actes
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ─── SPLASH SCREEN — Argo ─────────────────────────────────── */
 
 #splashScreen {
   position: fixed;
@@ -14,29 +7,12 @@
   background: linear-gradient(
     to bottom,
     #010c1f  0%,
-    #0c1c38 50%,
-    #0c2744 75%,
-    #091426 100%
+    #031830 40%,
+    #052347 65%,
+    #0a3060 100%
   );
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   transition: opacity 0.7s ease, visibility 0.7s ease;
-}
-
-/* Reflet de lune sur l'eau */
-#splashScreen::after {
-  content: '';
-  position: absolute;
-  bottom: 28%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 28%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.12), transparent);
-  pointer-events: none;
-  z-index: 2;
 }
 
 #splashScreen.splash-hide {
@@ -45,7 +21,7 @@
   pointer-events: none;
 }
 
-/* â”€â”€ Ã‰toiles & particules â”€â”€ */
+/* ── Étoiles & particules ── */
 #splashStars,
 #splashParticles {
   position: absolute;
@@ -69,34 +45,19 @@
   will-change: transform, opacity;
 }
 
-/* â”€â”€ Horizon â”€â”€ */
-.splash-horizon-glow {
-  position: absolute;
-  bottom: 28%;
-  left: 0;
-  right: 0;
-  height: 90px;
-  background: radial-gradient(
-    ellipse 85% 100% at 50% 100%,
-    rgba(245, 158, 11, 0.1),
-    transparent
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
+/* ── Horizon ── */
 .splash-horizon-line {
   position: absolute;
-  bottom: 28%;
+  bottom: 30dvh;
   left: 6%;
   right: 6%;
   height: 1px;
   background: linear-gradient(
     to right,
     transparent,
-    rgba(14, 165, 233, 0.3)  20%,
-    rgba(251, 191, 36, 0.25) 50%,
-    rgba(14, 165, 233, 0.3)  80%,
+    rgba(14,165,233,0.3)  20%,
+    rgba(251,191,36,0.25) 50%,
+    rgba(14,165,233,0.3)  80%,
     transparent
   );
   z-index: 2;
@@ -105,20 +66,15 @@
   will-change: opacity;
 }
 
-/* â”€â”€ L'Argo â”€â”€ */
+/* ── Bateau ── */
 .splash-ship {
   position: absolute;
-  bottom: 27%;
+  bottom: 28dvh;
   left: 0;
   z-index: 2;
   pointer-events: none;
   will-change: transform;
-  filter: drop-shadow(0 3px 14px rgba(245, 158, 11, 0.4));
-}
-
-/* TÃ©lÃ©phones trÃ¨s allongÃ©s (S25 Ultra, ratio > 9/5) */
-@media (min-aspect-ratio: 9/5) {
-  .splash-ship { bottom: 30%; }
+  filter: drop-shadow(0 3px 14px rgba(245,158,11,0.4));
 }
 
 .splash-ship svg {
@@ -132,7 +88,6 @@
   will-change: transform;
 }
 
-/* Reflet du bateau dans l'eau */
 .splash-ship-reflection {
   position: absolute;
   bottom: -14px;
@@ -142,9 +97,9 @@
   height: 14px;
   background: radial-gradient(
     ellipse at center,
-    rgba(251, 191, 36, 0.28)  0%,
-    rgba(14, 165, 233, 0.12) 45%,
-    transparent              70%
+    rgba(251,191,36,0.28)  0%,
+    rgba(14,165,233,0.12) 45%,
+    transparent           70%
   );
   filter: blur(3px);
   opacity: 0;
@@ -152,13 +107,13 @@
   will-change: opacity;
 }
 
-/* â”€â”€ Vagues (max 3) â”€â”€ */
+/* ── Vagues (max 3) ── */
 .splash-ocean {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 120px;
+  height: 30dvh;
   overflow: hidden;
   z-index: 1;
   pointer-events: none;
@@ -189,29 +144,38 @@
 }
 
 @keyframes waveScroll {
-  from { transform: translateZ(0) translateX(0);    }
+  from { transform: translateZ(0) translateX(0); }
   to   { transform: translateZ(0) translateX(-50%); }
 }
 
-/* â”€â”€ Contenu centrÃ© â”€â”€ */
+/* ── Contenu : logo + titre + devise ── */
 .splash-content {
-  position: relative;
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
   text-align: center;
+  width: 90%;
+  pointer-events: none;
 }
 
 .splash-icon {
   width: 80px;
   height: 80px;
-  border-radius: 20px;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(245,158,11,0.35);
   opacity: 0;
   will-change: opacity, transform;
-  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.28);
+  flex-shrink: 0;
+  overflow: hidden;
 }
+
+.splash-icon svg { display: block; }
 
 .splash-title {
   font-family: 'Poppins', sans-serif;
@@ -228,7 +192,7 @@
   display: flex;
   justify-content: center;
   gap: 2px;
-  opacity: 0; /* JS rend visible avant d'animer les lettres */
+  opacity: 0;
 }
 
 .splash-title-letter {
@@ -252,17 +216,9 @@
   will-change: opacity, transform;
 }
 
-/* â”€â”€ Protection contre le thÃ¨me clair â”€â”€ */
-/* Les rÃ¨gles [data-theme="light"] p/span/h1 { color !important } cassent
-   le splash qui reste toujours sur fond sombre. On rÃ©initialise ici. */
-#splashScreen .splash-sub {
-  color: #fde68a !important;
-  opacity: 0; /* contrÃ´lÃ© par JS/WAAPI, pas par le thÃ¨me */
-}
-#splashScreen .splash-title {
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
-}
+/* ── Protection contre le thème clair ── */
+#splashScreen .splash-sub { color: #fde68a !important; opacity: 0; }
+#splashScreen .splash-title { -webkit-text-fill-color: transparent !important; color: transparent !important; }
 #splashScreen .splash-title-letter {
   background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 30%, #f59e0b 60%, #fde68a 100%) !important;
   -webkit-background-clip: text !important;
@@ -274,24 +230,14 @@
 #splashScreen h2,
 #splashScreen h3,
 #splashScreen p,
-#splashScreen span {
-  /* HÃ©rite des rÃ¨gles spÃ©cifiques ci-dessus ; empÃªche la surcharge globale */
-  background-color: transparent;
-}
+#splashScreen span { background-color: transparent; }
 
-/* â”€â”€ Fallback CSS animations (iOS / WAAPI absent) â”€â”€ */
-.splash-fallback .splash-icon {
-  animation: splashFadeIn 0.5s 0.1s ease-out forwards;
-}
-.splash-fallback .splash-title-letter {
-  animation: splashRiseIn 0.35s ease-out forwards;
-}
-.splash-fallback .splash-sub {
-  animation: splashFadeIn 0.5s ease-out forwards;
-}
-.splash-fallback .splash-ship-inner {
-  animation: splashRock 2.8s 0.2s ease-in-out infinite;
-}
+/* ── Fallback CSS animations (WAAPI absent) ── */
+.splash-fallback .splash-icon { animation: splashFadeIn 0.5s 0.1s ease-out forwards; }
+.splash-fallback .splash-title-letter { animation: splashRiseIn 0.35s ease-out forwards; }
+.splash-fallback .splash-sub { animation: splashFadeIn 0.5s ease-out forwards; }
+.splash-fallback .splash-ship-inner { animation: splashRock 2.8s 0.2s ease-in-out infinite; }
+
 @keyframes splashFadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 0.82; transform: translateY(0); }
@@ -301,15 +247,15 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes splashRock {
-  0%, 100% { transform: translateY(0)   rotate(0deg);    }
-  35%       { transform: translateY(-7px) rotate(1.2deg);  }
-  70%       { transform: translateY(2px)  rotate(-0.4deg); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  35%      { transform: translateY(-7px) rotate(1.2deg); }
+  70%      { transform: translateY(2px) rotate(-0.4deg); }
 }
 
-/* â”€â”€ AccessibilitÃ© : mouvement rÃ©duit â”€â”€ */
+/* ── Accessibilité : mouvement réduit ── */
 @media (prefers-reduced-motion: reduce) {
   .splash-wave-1,
   .splash-wave-2,
-  .splash-wave-3  { animation: none; }
-  #splashScreen   { transition-duration: 0.5s; }
+  .splash-wave-3 { animation: none; }
+  #splashScreen  { transition-duration: 0.5s; }
 }

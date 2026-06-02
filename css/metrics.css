@@ -167,11 +167,11 @@
 
 .metric-card span {
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 2.8vw, 1rem);
 }
 
 .metric-card strong {
-  font-size: 1.55rem;
+  font-size: clamp(1.4rem, 5.5vw, 2rem);
   color: var(--accent);
 }
 

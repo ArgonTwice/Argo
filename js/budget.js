@@ -48,8 +48,7 @@ function calculerRestant() {
   const savingCapacity = remainingIncome * 0.15;
 
   // Matelas de sécurité = liquidités disponibles / dépenses mensuelles
-  const totalLiquid = bankAccounts.reduce((s, a) => s + a.balance, 0)
-    + parseAmount(document.getElementById('carrefourCurrentBalance')?.value);
+  const totalLiquid = bankAccounts.reduce((s, a) => s + a.balance, 0);
   const monthlyExpenses = totalObligations;
   const cushionMonths = monthlyExpenses > 0 ? (totalLiquid / monthlyExpenses) : 0;
   const cushionEl     = document.getElementById('securityCushion');
@@ -131,7 +130,6 @@ function updateDashboard() {
   createOrUpdateSixMonthChart();
   updateDebtRatio();
   updateHealthScoreBadge();
-  updateRealReturn();
   updateUpcomingCharges();
   updateHeroBar();
   updateBudgetDonutChart();
@@ -141,10 +139,9 @@ function getSavingsContributionTotal() {
   const peaSavings = peaActions.reduce((total, action) => total + getPeaTotalInvested(action), 0);
   const cryptoSavings = cryptoAssets.reduce((total, asset) => total + (parseAmount(asset.quantity) * parseAmount(asset.buyPrice)), 0);
   const natixisSavings = natixisPlacements.reduce((total, placement) => total + parseAmount(placement.initialCapital), 0);
-  const livretSavings = parseAmount(carrefourLivret.currentBalance);
   const bankSavings = bankAccounts.reduce((total, account) => total + parseAmount(account.balance), 0);
 
-  return peaSavings + cryptoSavings + natixisSavings + livretSavings + bankSavings;
+  return peaSavings + cryptoSavings + natixisSavings + bankSavings;
 }
 
 function getSavingsRateColor(rate) {
@@ -211,8 +208,7 @@ function getSavedSavingsRateSnapshot() {
       previousMonthKey: typeof parsedSnapshot.previousMonthKey === 'string' ? parsedSnapshot.previousMonthKey : null,
       previousRate: Number.isFinite(Number(parsedSnapshot.previousRate)) ? Number(parsedSnapshot.previousRate) : null,
     };
-  } catch (error) {
-    console.warn('Impossible de charger le snapshot du taux d epargne.', error);
+  } catch {
     return null;
   }
 }

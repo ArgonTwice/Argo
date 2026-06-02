@@ -2,7 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Argo</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,41 +42,25 @@
     <!-- ── Écran de démarrage Argo ── -->
     <div id="splashScreen" aria-hidden="true">
 
-      <!-- Ciel étoilé -->
       <div id="splashStars" aria-hidden="true"></div>
-
-      <!-- Particules dorées — la Toison d'Or -->
       <div id="splashParticles" aria-hidden="true"></div>
-
-      <!-- Lueur de l'horizon -->
-      <div class="splash-horizon-glow" aria-hidden="true"></div>
       <div class="splash-horizon-line" aria-hidden="true"></div>
 
-      <!-- L'Argo qui vogue -->
       <div class="splash-ship" aria-hidden="true">
         <div class="splash-ship-inner">
           <svg viewBox="0 0 148 68" width="148" height="68" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Coque -->
             <path d="M 6 48 Q 74 60 142 48 L 130 58 Q 74 66 18 58 Z" fill="#fbbf24"/>
-            <!-- Sillage -->
             <path d="M 12 56 Q 74 63 136 56" fill="none" stroke="#67e8f9" stroke-width="1.5" opacity="0.4"/>
-            <!-- Mât -->
             <line x1="64" y1="6" x2="64" y2="49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
-            <!-- Grande voile -->
             <path d="M 65 9 C 102 17 100 38 94 48 L 65 48 Z" fill="#fde68a" opacity="0.9"/>
-            <!-- Petite voile -->
             <path d="M 63 12 C 28 22 30 40 34 48 L 63 48 Z" fill="#fcd34d" opacity="0.75"/>
-            <!-- Oriflamme -->
             <path d="M 64 6 L 82 13 L 64 20 Z" fill="#f59e0b"/>
-            <!-- Reflet sur la coque -->
             <path d="M 30 50 Q 74 56 118 50" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
           </svg>
-          <!-- Reflet dans l'eau — dans inner pour tanguer avec le bateau -->
           <div class="splash-ship-reflection" aria-hidden="true"></div>
         </div>
       </div>
 
-      <!-- Vagues océan -->
       <div class="splash-ocean" aria-hidden="true">
         <svg class="splash-wave splash-wave-1" viewBox="0 0 2000 100" preserveAspectRatio="none">
           <path d="M0,50 C250,90 750,10 1000,50 C1250,90 1750,10 2000,50 L2000,100 L0,100 Z" fill="rgba(14,165,233,0.12)"/>
@@ -89,10 +73,25 @@
         </svg>
       </div>
 
-      <!-- Contenu central -->
       <div class="splash-content">
-        <img src="icon.svg" alt="" class="splash-icon" width="96" height="96" />
-        <h1 class="splash-title">Argo</h1>
+        <div class="splash-icon" aria-hidden="true">
+          <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="splashLogoGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0f2b5e"/>
+                <stop offset="100%" stop-color="#1565a8"/>
+              </linearGradient>
+            </defs>
+            <rect width="80" height="80" rx="22" fill="url(#splashLogoGrad)"/>
+            <circle cx="40" cy="18" r="5.5" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+            <line x1="40" y1="23.5" x2="40" y2="62" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="22" y1="30" x2="58" y2="30" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M40,62 Q28,57 24,50" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M40,62 Q52,57 56,50" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M24,50 Q40,66 56,50" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h1 class="splash-title">ARGO</h1>
         <p class="splash-sub">Cap sur votre toison d'or.</p>
       </div>
 
@@ -313,7 +312,7 @@
               <div class="summary-hero">
                 <p class="summary-hero-kicker">Patrimoine Total</p>
                 <h2 id="totalPatrimony">0 €</h2>
-                <p id="investmentBreakdown" class="investment-breakdown">PEA : 0 € | Crypto : 0 € | Natixis : 0 € | Carrefour : 0 €</p>
+                <p id="investmentBreakdown" class="investment-breakdown">PEA : 0 € | Crypto : 0 € | Natixis : 0 €</p>
                 <div id="healthScoreBadge" class="health-score-badge"></div>
               </div>
 
@@ -413,7 +412,7 @@
                 <article class="panel chart-card">
                   <div class="panel-heading">
                     <h2>Répartition du patrimoine</h2>
-                    <p>Visualisez la part de votre PEA, crypto, Natixis et Carrefour dans votre patrimoine global.</p>
+                    <p>Visualisez la part de votre PEA, crypto, Natixis et banque dans votre patrimoine global.</p>
                   </div>
                   <div class="chart-wrap">
                     <canvas id="chargesChart" aria-label="Répartition du patrimoine" role="img"></canvas>
@@ -431,19 +430,6 @@
                 </article>
               </div>
 
-              <section class="panel">
-                <div class="panel-heading">
-                  <h2><i class="fa-solid fa-fire"></i> Rendement réel vs inflation</h2>
-                  <p>Ce que rapporte vraiment ton épargne après inflation.</p>
-                </div>
-                <div class="inflation-alert-grid">
-                  <label><span>Taux inflation actuel (%)</span>
-                    <input type="number" id="currentInflationRate" step="0.1" value="2.5" inputmode="decimal"/></label>
-                  <label><span>Taux livret Carrefour (%)</span>
-                    <input type="number" id="livretRateDisplay" step="0.1" value="0" inputmode="decimal" readonly/></label>
-                </div>
-                <div class="real-return-display" id="realReturnDisplay"></div>
-              </section>
 
               <section class="panel">
                 <div class="panel-heading">
@@ -586,7 +572,7 @@
                 <p>Charges fixes · Dépenses perso · Courses</p>
               </div>
               <div class="budget-donut-wrap">
-                <div class="chart-wrap" style="height:200px;max-width:220px;">
+                <div class="chart-wrap" style="height:280px;">
                   <canvas id="budgetDonutChart" aria-label="Répartition des dépenses" role="img"></canvas>
                 </div>
                 <div class="budget-donut-legend" id="budgetDonutLegend"></div>
@@ -755,56 +741,7 @@
                 </div>
               </article>
 
-              <!-- 2. LIVRET CARREFOUR — épargne réglementée, suivi mensuel -->
-              <article class="asset-card asset-card-wide">
-                <div class="panel-heading section-heading-row">
-                  <div>
-                    <p class="asset-kicker">CARREFOUR BANQUE</p>
-                    <h3 class="module-title">LIVRET CARREFOUR</h3>
-                    <p class="crypto-status">Saisissez votre solde et votre taux annuel, puis notez l’évolution mensuelle du livret.</p>
-                  </div>
-                  <button type="button" class="reset-section-btn" data-reset-specific-section="livretCarrefourData">
-                    <i class="fa-solid fa-trash-alt"></i>
-                    <span>Reset</span>
-                  </button>
-                </div>
-
-                <div class="asset-field-grid">
-                  <label>
-                    <span>Solde du livret (€)</span>
-                    <input type="number" id="carrefourCurrentBalance" min="0" step="0.01" value="0" inputmode="decimal" />
-                  </label>
-
-                  <label>
-                    <span>Taux d’intérêt annuel (%)</span>
-                    <input type="number" id="carrefourInterest" min="0" step="0.01" value="0" inputmode="decimal" />
-                  </label>
-                </div>
-
-                <div class="pea-actions-toolbar">
-                  <p class="dynamic-empty">Ajoutez une entrée mensuelle avec la date et le solde observé.</p>
-                  <div class="crypto-add-controls">
-                    <input type="date" id="carrefourHistoryDate" />
-                    <input type="number" id="carrefourHistoryBalance" min="0" step="0.01" value="0" inputmode="decimal" placeholder="Solde du mois" />
-                    <button type="button" id="addCarrefourMonthButton" class="action-btn">+ Ajouter au suivi</button>
-                  </div>
-                </div>
-
-                <div class="asset-table-wrap">
-                  <table class="asset-table">
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Solde</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody id="carrefourHistoryBody"></tbody>
-                  </table>
-                </div>
-              </article>
-
-              <!-- 3. NATIXIS — placements gérés, valorisation moyen terme -->
+              <!-- 2. NATIXIS — placements gérés, valorisation moyen terme -->
               <article class="asset-card asset-card-wide">
                 <div class="panel-heading section-heading-row">
                   <div>

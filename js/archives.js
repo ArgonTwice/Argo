@@ -44,8 +44,7 @@ function loadArchives() {
             : parseAmount(archive?.finalBalance),
         }))
       : [];
-  } catch (error) {
-    console.warn('Impossible de charger les archives mensuelles.', error);
+  } catch {
     monthlyArchives = [];
   }
 }
@@ -193,7 +192,6 @@ function exportMonthlyPDF() {
     <tr><td>PEA</td><td>${formatCurrency(breakdown.pea)}</td></tr>
     <tr><td>Crypto</td><td>${formatCurrency(breakdown.crypto)}</td></tr>
     <tr><td>Natixis</td><td>${formatCurrency(breakdown.natixis)}</td></tr>
-    <tr><td>Livret Carrefour</td><td>${formatCurrency(breakdown.carrefour)}</td></tr>
     <tr><td>Banque</td><td>${formatCurrency(breakdown.banque)}</td></tr>
   </table>
   <footer>Généré le ${now.toLocaleDateString('fr-FR')} à ${now.toLocaleTimeString('fr-FR')} — Dashboard Financier PWA</footer>

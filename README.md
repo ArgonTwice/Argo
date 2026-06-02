@@ -1,71 +1,95 @@
-# Dashboard Financier PWA
+# Argo 🚢
+> Cap sur votre toison d'or.
 
-Application web progressive (PWA) de gestion des finances personnelles. Suivez votre patrimoine, votre budget mensuel, vos investissements et vos projets immobiliers depuis un seul tableau de bord, sans inscription ni serveur — toutes les données restent dans votre navigateur via `localStorage`.
+![PWA](https://img.shields.io/badge/PWA-ready-blue)
+![Vanilla JS](https://img.shields.io/badge/JS-Vanilla-yellow)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-Installable sur mobile et desktop comme une application native.
+## Présentation
 
----
+Argo est une PWA de gestion financière personnelle 100 % côté client.
+Elle centralise revenus, charges fixes, dépenses, investissements et simulation immobilière
+dans une interface glassmorphism inspirée du thème "Cyber Blue".
+Toutes les données restent locales — aucun serveur, aucune donnée envoyée.
+
+![Argo Dashboard](screenshot.png)
 
 ## Fonctionnalités
 
-- **Tableau de bord mensuel** — revenus, charges fixes, dépenses, reste à vivre et capacité d'épargne recalculés en temps réel
-- **Compte courant** — suivi du solde réel et projection de fin de mois
-- **Virement automatique & rentrées exceptionnelles** — pris en compte dans le calcul du reste à vivre
-- **Ratio d'endettement** — analyse automatique avec indicateur visuel et seuil bancaire 33 %
-- **Score de santé financière** — badge synthétique (vert / jaune / orange / rouge)
-- **Investissements** — PEA actions, portefeuille Crypto (prix en direct via CoinGecko), Natixis et Livret Carrefour
-- **Comptes bancaires** — suivi multi-comptes avec intérêts estimés
-- **Objectifs financiers** — création d'objectifs avec barre de progression
-- **Simulateur d'épargne composée** — projection sur 40 ans avec jalons par décennie
-- **Simulation d'achat** — impact immédiat sur le reste à vivre sans modifier les données
-- **Projet immobilier** — calcul de mensualité, coût total du crédit et impact de l'apport
-- **Archives mensuelles** — clôture de mois, historique et graphiques d'évolution du patrimoine
-- **Alertes budget** — seuils configurables par catégorie de dépenses
-- **Prélèvements à venir** — charges fixes prévues dans les 7 prochains jours
-- **Recherche rapide** — accès instantané à n'importe quelle donnée du dashboard
-- **Thème clair / sombre** — bascule en un clic, mémorisée
-
----
-
-## Utilisation
-
-### Ouverture locale
-
-Ouvrez simplement `index.html` dans un navigateur moderne (Chrome, Firefox, Edge, Safari). Aucun serveur ni installation requise.
-
-```
-# Optionnel — serveur local pour activer le Service Worker PWA
-npx serve .
-# ou
-python -m http.server 8080
-```
-
-### Installation PWA
-
-Sur mobile : ouvrez l'URL dans Chrome ou Safari, puis utilisez **"Ajouter à l'écran d'accueil"**. L'app fonctionne hors ligne une fois installée.
-
-### Sauvegarde
-
-Utilisez les boutons **Exporter / Importer sauvegarde** pour sauvegarder vos données sous forme de fichier JSON ou les restaurer sur un autre appareil.
-
----
+- **Tableau de bord** — solde courant, reste à vivre, score santé financière
+- **Budget** — charges fixes, dépenses perso, courses, alertes de seuil
+- **Investissements** — PEA, Natixis, Carrefour, Crypto (prix live via CoinGecko), comptes bancaires
+- **Immobilier** — simulation crédit, capacité d'emprunt, tableau d'amortissement
+- **Objectifs** — objectifs financiers et objectifs de vie avec barre de progression
+- **Archives** — clôture mensuelle, historique net worth, graphiques 6 mois
+- **Multi-profils** — données isolées par profil, renommage inline
+- **PWA** — installable Android & iOS, cache offline via Service Worker
 
 ## Stack technique
 
 | Technologie | Usage |
-|---|---|
-| HTML / CSS / JavaScript (vanilla) | Structure, style et logique applicative |
-| [Chart.js](https://www.chartjs.org/) | Graphiques (patrimoine, reste à vivre, net worth, 6 mois, épargne) |
-| [Font Awesome 6](https://fontawesome.com/) | Icônes |
-| [Google Fonts](https://fonts.google.com/) — Lato, Poppins | Typographie |
-| [CoinGecko API](https://www.coingecko.com/en/api) | Prix des crypto-monnaies en temps réel |
-| `localStorage` | Persistance des données côté client |
-| Service Worker (manifest.json) | PWA — installation et mode hors ligne |
+|-------------|-------|
+| HTML / CSS / JS vanilla | Interface et logique métier |
+| Chart.js | Graphiques (doughnut, bar, line) |
+| Font Awesome 6 | Icônes |
+| CoinGecko API | Prix crypto en temps réel |
+| localStorage | Persistance des données |
+| Service Worker | Cache offline / PWA |
 
----
+## Installation & lancement
 
-## Screenshot
+```bash
+git clone https://github.com/[username]/argo.git
+cd argo
+npx serve .
+```
 
-![Dashboard Financier PWA](screenshot.png)
+Ou simplement ouvrir `index.html` directement dans un navigateur moderne.
 
-> Remplacer `screenshot.png` par une capture d'écran réelle du dashboard.
+## Installation PWA
+
+**Android** — Ouvrir dans Chrome → menu ⋮ → *Ajouter à l'écran d'accueil*
+
+**iOS** — Ouvrir dans Safari → bouton Partager → *Sur l'écran d'accueil*
+
+## Sauvegarde des données
+
+Via le bouton **Exporter** (section Paramètres) : génère un fichier JSON téléchargeable.
+**Importer** recharge ce fichier et restaure toutes les données instantanément.
+
+## Structure du projet
+
+```
+argo/
+├── index.html          # Point d'entrée, structure HTML complète
+├── manifest.json       # Config PWA (nom, icônes, couleurs)
+├── sw.js               # Service Worker — cache network-first
+├── icon.svg            # Icône app
+├── css/
+│   ├── base.css        # Reset, variables CSS, typographie
+│   ├── layout.css      # App shell, navigation, grilles
+│   ├── components.css  # Boutons, inputs, cards, modals
+│   ├── metrics.css     # Panels KPI, hero bar, score santé
+│   ├── budget.css      # Section Mon Budget
+│   ├── goals.css       # Objectifs financiers et de vie
+│   ├── features.css    # Dashboard de vie, simulateurs
+│   ├── theme.css       # Thème clair/sombre, overrides
+│   ├── ui-v2.css       # Profils, upload, composants avancés
+│   ├── fixes.css       # Correctifs cross-browser / mobile
+│   ├── responsive.css  # Breakpoints 390px → desktop
+│   └── splash.css      # Écran de démarrage animé
+└── js/
+    ├── app.js          # Point d'entrée, initializeApp()
+    ├── utils.js        # Constantes, parseAmount, formatCurrency
+    ├── storage.js      # save*, load*, backup export/import
+    ├── budget.js       # Calculs budget, updateDashboard()
+    ├── investments.js  # PEA, Natixis, Crypto, fetchCryptoPrices()
+    ├── mortgage.js     # Simulation crédit immobilier
+    ├── charts.js       # Création et mise à jour des graphiques
+    ├── archives.js     # Clôture mensuelle, historique
+    └── ui.js           # Navigation, thème, splash, render*
+```
+
+## Licence
+
+MIT — voir [LICENSE](LICENSE)

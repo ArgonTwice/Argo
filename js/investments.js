@@ -164,16 +164,6 @@ function resetSpecificSection(sectionKey) {
     return;
   }
 
-  if (sectionKey === SPECIFIC_RESET_STORAGE_KEYS.livretCarrefourData) {
-    carrefourLivret = { currentBalance: 0, rate: 0, history: [] };
-    localStorage.removeItem(sectionKey);
-    saveMainStorageSnapshot();
-    renderCarrefourHistory();
-    updateDashboard();
-    showResetToast(label);
-    return;
-  }
-
   if (sectionKey === SPECIFIC_RESET_STORAGE_KEYS.natixisData) {
     natixisPlacements = [];
     localStorage.removeItem(sectionKey);
@@ -224,14 +214,12 @@ function resetSection(sectionName) {
     cryptoAssets = normalizeCryptoAssets([...DEFAULT_CRYPTOS]);
     peaActions = [];
     natixisPlacements = [];
-    carrefourLivret = { currentBalance: 0, rate: 0, history: [] };
     localStorage.removeItem(SECTION_STORAGE_KEYS.investments);
     saveMainStorageSnapshot();
     renderCryptoTable();
     updateCryptoValues();
     renderPeaActions();
     renderNatixisTable();
-    renderCarrefourHistory();
     updateDashboard();
     showResetToast('Investissements');
     return;
@@ -294,10 +282,6 @@ function calculateNatixisCurrentValue(placement) {
   return parseAmount(placement.initialCapital) * (1 + parseAmount(placement.performanceRate) / 100);
 }
 
-function calculateCarrefourInterest(balance) {
-  return parseAmount(balance) * (parseAmount(carrefourLivret.rate) / 100);
-}
-
 function getPeaCurrentValue() {
   return peaActions.reduce((total, action) => total + action.quantity * action.currentPrice, 0);
 }
@@ -315,7 +299,6 @@ function getInvestmentBreakdown() {
     pea: getPeaCurrentValue(),
     crypto: getCryptoCurrentValue(),
     natixis: getNatixisCurrentValue(),
-    carrefour: parseAmount(carrefourLivret.currentBalance),
     banque: bankAccounts.reduce((total, account) => total + parseAmount(account.balance), 0),
     checking: checkingBalance,
   };
@@ -323,12 +306,12 @@ function getInvestmentBreakdown() {
 
 function getInvestmentBreakdownText() {
   const breakdown = getInvestmentBreakdown();
-  return `PEA : ${formatCurrency(breakdown.pea)} | Crypto : ${formatCurrency(breakdown.crypto)} | Natixis : ${formatCurrency(breakdown.natixis)} | Carrefour : ${formatCurrency(breakdown.carrefour)} | Banque : ${formatCurrency(breakdown.banque)} | CC : ${formatCurrency(breakdown.checking)}`;
+  return `PEA : ${formatCurrency(breakdown.pea)} | Crypto : ${formatCurrency(breakdown.crypto)} | Natixis : ${formatCurrency(breakdown.natixis)} | Banque : ${formatCurrency(breakdown.banque)} | CC : ${formatCurrency(breakdown.checking)}`;
 }
 
 function getTotalPatrimony() {
   const breakdown = getInvestmentBreakdown();
-  return breakdown.pea + breakdown.crypto + breakdown.natixis + breakdown.carrefour + breakdown.banque + breakdown.checking;
+  return breakdown.pea + breakdown.crypto + breakdown.natixis + breakdown.banque + breakdown.checking;
 }
 
 function updateTotalPatrimony() {
@@ -349,13 +332,12 @@ function updateTotalPatrimony() {
 
   if (chargesChart) {
     const breakdown = getInvestmentBreakdown();
-    chargesChart.data.datasets[0].data = [breakdown.pea, breakdown.crypto, breakdown.natixis, breakdown.carrefour, breakdown.banque];
+    chargesChart.data.datasets[0].data = [breakdown.pea, breakdown.crypto, breakdown.natixis, breakdown.banque];
     chargesChart.update();
   }
 
   // ── Répartition sécurisé vs croissance ───────────────────────
-  const secure = bankAccounts.reduce((s, a) => s + a.balance, 0)
-    + parseAmount(document.getElementById('carrefourCurrentBalance')?.value);
+  const secure = bankAccounts.reduce((s, a) => s + a.balance, 0);
   const growth    = getPeaCurrentValue() + getCryptoCurrentValue() + getNatixisCurrentValue();
   const splitTotal = secure + growth;
   const securePct  = splitTotal > 0 ? (secure / splitTotal * 100) : 50;
@@ -540,50 +522,6 @@ function renderNatixisTable() {
   updateTotalPatrimony();
 }
 
-function formatCarrefourHistoryDate(value) {
-  if (!value) {
-    return 'Date non renseignée';
-  }
-
-  const parsed = new Date(`${value}T00:00:00`);
-
-  if (Number.isNaN(parsed.getTime())) {
-    return String(value);
-  }
-
-  return parsed.toLocaleDateString('fr-FR');
-}
-
-function renderCarrefourHistory() {
-  carrefourHistoryBody.innerHTML = '';
-
-  if (carrefourLivret.history.length === 0) {
-    const row = document.createElement('tr');
-    row.innerHTML = '<td colspan="3">Aucune évolution mensuelle enregistrée.</td>';
-    carrefourHistoryBody.appendChild(row);
-  } else {
-    carrefourLivret.history.forEach((entry, index) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${formatCarrefourHistoryDate(entry.month)}</td>
-        <td>${formatCurrency(entry.balance)}</td>
-        <td><button type="button" class="danger-btn icon-btn" data-carrefour-remove-index="${index}" aria-label="Supprimer l'entrée Carrefour">
-          <i class="fa-solid fa-trash-can"></i>
-        </button></td>
-      `;
-      carrefourHistoryBody.appendChild(row);
-    });
-  }
-
-  updateCarrefourSummary();
-}
-
-function updateCarrefourSummary() {
-  carrefourCurrentBalanceInput.value = parseAmount(carrefourLivret.currentBalance);
-  carrefourInterestEl.value = parseAmount(carrefourLivret.rate);
-  updateTotalPatrimony();
-}
-
 function addPeaAction() {
   peaActions.push({ name: '', quantity: 0, buyPrice: 0, currentPrice: 0 });
   renderPeaActions();
@@ -662,53 +600,6 @@ function removePeaAction(index) {
   saveFormData();
 }
 
-function updateCarrefourBalance() {
-  carrefourLivret.currentBalance = parseAmount(carrefourCurrentBalanceInput.value);
-  saveFormData();
-  updateTotalPatrimony();
-}
-
-function updateCarrefourRate() {
-  carrefourLivret.rate = parseAmount(carrefourInterestEl.value);
-  saveFormData();
-}
-
-function addCarrefourMonth() {
-  const monthValue = carrefourHistoryDateInput.value.trim();
-  const balance = parseAmount(carrefourHistoryBalanceInput.value);
-
-  carrefourLivret.currentBalance = balance;
-  carrefourLivret.history.push({
-    month: monthValue || new Date().toISOString().slice(0, 10),
-    balance,
-  });
-
-  carrefourHistoryDateInput.value = '';
-  carrefourHistoryBalanceInput.value = balance;
-  carrefourCurrentBalanceInput.value = parseAmount(balance);
-
-  saveFormData();
-  renderCarrefourHistory();
-}
-
-function removeCarrefourMonth(index) {
-  if (!carrefourLivret.history[index]) {
-    return;
-  }
-
-  carrefourLivret.history.splice(index, 1);
-
-  if (carrefourLivret.history.length > 0) {
-    carrefourLivret.currentBalance = carrefourLivret.history[carrefourLivret.history.length - 1].balance;
-  } else {
-    carrefourLivret.currentBalance = 0;
-  }
-
-  carrefourCurrentBalanceInput.value = parseAmount(carrefourLivret.currentBalance);
-  saveFormData();
-  renderCarrefourHistory();
-}
-
 function bindPeaActionsListeners() {
   addPeaActionButton.addEventListener('click', addPeaAction);
 
@@ -754,22 +645,6 @@ function bindNatixisListeners() {
     }
 
     removeNatixisPlacement(Number(removeIndex));
-  });
-}
-
-function bindCarrefourListeners() {
-  carrefourCurrentBalanceInput.addEventListener('input', updateCarrefourBalance);
-  carrefourInterestEl.addEventListener('input', updateCarrefourRate);
-  addCarrefourMonthButton.addEventListener('click', addCarrefourMonth);
-
-  carrefourHistoryBody.addEventListener('click', (event) => {
-    const removeIndex = event.target.dataset.carrefourRemoveIndex;
-
-    if (removeIndex === undefined) {
-      return;
-    }
-
-    removeCarrefourMonth(Number(removeIndex));
   });
 }
 
