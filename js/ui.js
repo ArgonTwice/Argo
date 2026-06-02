@@ -91,7 +91,7 @@ function setActiveSection(sectionKey) {
   document.querySelectorAll('.page-section').forEach((section) => {
     const isVisible = section.id === `${sectionKey}-section`;
     section.classList.toggle('is-visible', isVisible);
-    section.style.display = isVisible ? 'block' : 'none';
+    section.style.display = '';
   });
 
   document.querySelectorAll('.nav-link, .tab-btn').forEach((button) => {
