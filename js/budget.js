@@ -45,6 +45,10 @@ function calculerRestant() {
   // Reste à vivre = revenus − obligations
   const remainingIncome = totalIncome - totalObligations;
 
+  const ccBase = parseAmount(checkingBalanceInput?.value);
+  const ccDynamic = ccBase + totalIncome - totalObligations;
+  updateCheckingSummary(ccDynamic);
+
   const savingCapacity = remainingIncome * 0.15;
 
   // Matelas de sécurité = liquidités disponibles / dépenses mensuelles
@@ -477,11 +481,16 @@ function loadPonctuels() {
   updatePonctualsTotal();
 }
 
-function updateCheckingSummary() {
+function updateCheckingSummary(ccDynamic) {
   if (!checkingSummaryEl) return;
-  checkingSummaryEl.textContent = `Solde compte courant : ${formatCurrency(checkingBalance)}`;
+  checkingSummaryEl.textContent = `Solde actuel : ${formatCurrency(checkingBalance)}`;
   checkingSummaryEl.classList.toggle('checking-summary-negative', checkingBalance < 0);
   checkingSummaryEl.classList.toggle('checking-summary-positive', checkingBalance > 0);
+  const projEl = document.getElementById('checkingProjected');
+  if (projEl && ccDynamic !== undefined) {
+    projEl.textContent = `Projeté fin de mois : ${formatCurrency(ccDynamic)}`;
+    projEl.style.color = ccDynamic >= 0 ? '#34d399' : '#f87171';
+  }
 }
 
 function saveCheckingBalance() {
