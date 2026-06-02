@@ -1,23 +1,46 @@
-const CACHE_NAME = 'pwa-v18';
-const ASSETS = ['./', './index.html', './style.css', './script.js', './manifest.json', './icon.svg'];
+const CACHE_NAME = 'pwa-v20';
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  './icon.svg',
+  './css/base.css',
+  './css/budget.css',
+  './css/components.css',
+  './css/features.css',
+  './css/fixes.css',
+  './css/goals.css',
+  './css/layout.css',
+  './css/metrics.css',
+  './css/responsive.css',
+  './css/splash.css',
+  './css/theme.css',
+  './css/ui-v2.css',
+  './js/app.js',
+  './js/archives.js',
+  './js/budget.js',
+  './js/charts.js',
+  './js/investments.js',
+  './js/mortgage.js',
+  './js/storage.js',
+  './js/ui.js',
+  './js/utils.js',
+];
 
-/* Installation — met en cache tous les assets */
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
-  self.skipWaiting(); // active immédiatement sans attendre la fermeture des onglets
+  self.skipWaiting();
 });
 
-/* Activation — supprime les anciens caches */
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
     )
   );
-  self.clients.claim(); // prend le contrôle de tous les onglets ouverts
+  self.clients.claim();
 });
 
-/* Messages depuis le client — notifications locales */
 self.addEventListener('message', (e) => {
   if (e.data?.type !== 'SHOW_NOTIF') return;
   self.registration.showNotification(e.data.title, {
@@ -29,22 +52,18 @@ self.addEventListener('message', (e) => {
   });
 });
 
-/* Fetch — network-first : toujours la version fraîche, cache en fallback hors-ligne */
 self.addEventListener('fetch', (e) => {
-  // On ne gère que les requêtes GET
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  if (url.protocol === 'chrome-extension:') return;
 
   e.respondWith(
     fetch(e.request)
       .then((networkResponse) => {
-        // Met à jour le cache avec la réponse réseau
         const clone = networkResponse.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
         return networkResponse;
       })
-      .catch(() => {
-        // Réseau indisponible → on sert depuis le cache
-        return caches.match(e.request);
-      })
+      .catch(() => caches.match(e.request))
   );
 });
