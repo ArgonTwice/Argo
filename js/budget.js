@@ -47,28 +47,32 @@ function calculerRestant() {
 
   const ccBase = parseAmount(checkingBalanceInput?.value);
   const ccDynamic = ccBase + totalIncome - totalObligations;
-  updateCheckingSummary(ccDynamic);
+  updateCheckingSummary();
+  const projEl = document.getElementById('checkingProjected');
+  if (projEl) {
+    projEl.innerHTML = `<span class="cc-projected" style="display:block;color:${ccDynamic >= 0 ? '#34d399' : '#f87171'};font-weight:700">${formatCurrency(ccDynamic)}</span><span class="calc-detail">${formatCurrency(ccBase)} (actuel) + ${formatCurrency(totalIncome)} (entrées) − ${formatCurrency(totalObligations)} (sorties)</span>`;
+  }
 
   const savingCapacity = remainingIncome * 0.15;
 
-  // Matelas de sécurité = liquidités disponibles / dépenses mensuelles
-  const totalLiquid = bankAccounts.reduce((s, a) => s + a.balance, 0);
-  const monthlyExpenses = totalObligations;
-  const cushionMonths = monthlyExpenses > 0 ? (totalLiquid / monthlyExpenses) : 0;
-  const cushionEl     = document.getElementById('securityCushion');
+  const totalLiquid = bankAccounts.reduce((sum, account) => sum + parseAmount(account.balance), 0);
+  const cushionMonths = totalObligations > 0 ? totalLiquid / totalObligations : 0;
+  const cushionEl = document.getElementById('securityCushion');
   const cushionStatus = document.getElementById('securityCushionStatus');
   if (cushionEl) cushionEl.textContent = cushionMonths.toFixed(1) + ' mois';
   if (cushionStatus) {
+    let statusColor, statusText;
     if (cushionMonths < 3) {
-      cushionStatus.textContent = '⚠ Insuffisant — cible : 3 mois minimum';
-      cushionStatus.style.color = '#f87171';
+      statusColor = '#f87171';
+      statusText = '⚠ Insuffisant — cible : 3 mois minimum';
     } else if (cushionMonths < 6) {
-      cushionStatus.textContent = '● Correct — cible : 6 mois idéal';
-      cushionStatus.style.color = '#fbbf24';
+      statusColor = '#fbbf24';
+      statusText = '● Correct — cible : 6 mois idéal';
     } else {
-      cushionStatus.textContent = '✓ Solide — matelas sécurisé';
-      cushionStatus.style.color = '#34d399';
+      statusColor = '#34d399';
+      statusText = '✓ Solide — matelas sécurisé';
     }
+    cushionStatus.innerHTML = `<span class="calc-detail">${formatCurrency(totalLiquid)} (banque) ÷ ${formatCurrency(totalObligations)} (obligations/mois)</span><span style="display:block;color:${statusColor}">${statusText}</span>`;
   }
 
   totalIncomeEl.textContent = formatCurrency(totalIncome);
@@ -481,16 +485,11 @@ function loadPonctuels() {
   updatePonctualsTotal();
 }
 
-function updateCheckingSummary(ccDynamic) {
+function updateCheckingSummary() {
   if (!checkingSummaryEl) return;
   checkingSummaryEl.textContent = `Solde actuel : ${formatCurrency(checkingBalance)}`;
   checkingSummaryEl.classList.toggle('checking-summary-negative', checkingBalance < 0);
   checkingSummaryEl.classList.toggle('checking-summary-positive', checkingBalance > 0);
-  const projEl = document.getElementById('checkingProjected');
-  if (projEl && ccDynamic !== undefined) {
-    projEl.textContent = `Projeté fin de mois : ${formatCurrency(ccDynamic)}`;
-    projEl.style.color = ccDynamic >= 0 ? '#34d399' : '#f87171';
-  }
 }
 
 function saveCheckingBalance() {

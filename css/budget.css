@@ -470,3 +470,21 @@
   color: #6ee7b7;
 }
 
+.checking-projected {
+  margin: 0.4rem 0 0;
+  padding: 0 0.2rem;
+}
+
+.calc-detail {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+[data-theme="light"] .calc-detail {
+  color: #64748b;
+}
+
