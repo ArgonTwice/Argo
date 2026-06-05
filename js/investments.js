@@ -622,6 +622,10 @@ function bindPeaActionsListeners() {
 
     removePeaAction(Number(removeIndex));
   });
+
+  peaActionsList.addEventListener('keydown', (e) => {
+    if (e.key === '.' || e.key === ',') e.stopPropagation();
+  });
 }
 
 function bindNatixisListeners() {
@@ -645,6 +649,10 @@ function bindNatixisListeners() {
     }
 
     removeNatixisPlacement(Number(removeIndex));
+  });
+
+  natixisTableBody.addEventListener('keydown', (e) => {
+    if (e.key === '.' || e.key === ',') e.stopPropagation();
   });
 }
 

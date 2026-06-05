@@ -54,6 +54,12 @@ function initializeApp() {
     });
   }
 
+  if (cryptoTableBody) {
+    cryptoTableBody.addEventListener('keydown', (e) => {
+      if (e.key === '.' || e.key === ',') e.stopPropagation();
+    });
+  }
+
   Object.values(fields).forEach((field) => {
     field.addEventListener('input', () => {
       saveFormData();
@@ -63,6 +69,12 @@ function initializeApp() {
   });
 
 }
+
+document.addEventListener('keydown', (e) => {
+  if (document.activeElement?.tagName === 'INPUT' && document.activeElement?.type === 'number') {
+    if (e.key === '.' || e.key === ',') e.stopPropagation();
+  }
+}, true);
 
 window.addEventListener('load', initializeApp);
 
