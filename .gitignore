@@ -9,3 +9,5 @@ dist/
 *.tmp
 .vscode/settings.json
 screenshot.png
+REPRISE.md
+CLAUDE.md
