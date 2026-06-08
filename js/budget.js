@@ -46,17 +46,23 @@ function calculerRestant() {
   const remainingIncome = totalIncome - totalObligations;
 
   const ccDynamic = totalIncome - totalObligations;
-  if (checkingBalanceInput && document.activeElement !== checkingBalanceInput) {
-    checkingBalanceInput.value = ccDynamic.toFixed(2);
-    checkingBalance = ccDynamic;
-    saveCheckingBalance();
-  }
   if (checkingBalanceInput) {
-    checkingBalanceInput.style.color = ccDynamic >= 0 ? '#34d399' : '#f87171';
+    if (document.activeElement !== checkingBalanceInput) {
+      checkingBalanceInput.value = ccDynamic.toFixed(2);
+      checkingBalance = ccDynamic;
+      checkingBalanceInput.style.color = ccDynamic >= 0 ? '#34d399' : '#f87171';
+    }
+    saveCheckingBalance();
   }
   const ccDetailEl = document.getElementById('checkingCalcDetail');
   if (ccDetailEl) {
-    ccDetailEl.textContent = `${formatCurrency(totalIncome)} (entrées) − ${formatCurrency(totalObligations)} (sorties)`;
+    ccDetailEl.textContent =
+      `${formatCurrency(totalIncome)} (entrées) − ${formatCurrency(totalObligations)} (sorties)`;
+  }
+  const checkingProjectedEl = document.getElementById('checkingSummary');
+  if (checkingProjectedEl) {
+    checkingProjectedEl.textContent = `Solde projeté : ${formatCurrency(ccDynamic)}`;
+    checkingProjectedEl.style.color = ccDynamic >= 0 ? '#34d399' : '#f87171';
   }
 
   const savingCapacity = remainingIncome * 0.15;
