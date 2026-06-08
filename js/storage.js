@@ -116,6 +116,7 @@ function normalizeDynamicItems(items) {
     amount: parseAmount(item?.amount),
     day: normalizeChargeDay(item?.day),
     recurring: typeof item?.recurring === 'boolean' ? item.recurring : true,
+    date: typeof item?.date === 'string' ? item.date : '',
   }));
 }
 

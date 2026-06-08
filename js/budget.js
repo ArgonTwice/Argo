@@ -354,6 +354,7 @@ function renderDynamicSection(sectionKey) {
     row.className = 'dynamic-entry';
 
     const showDayField = sectionKey === 'fixedCharges';
+    const showDate = sectionKey === 'personalExpenses' || sectionKey === 'groceryExpenses';
 
     row.innerHTML = `
       <label>
@@ -372,6 +373,12 @@ function renderDynamicSection(sectionKey) {
         <label class="recurring-toggle-label" title="Se renouvelle automatiquement au mois suivant">
           <input type="checkbox" class="recurring-checkbox" data-section="${sectionKey}" data-index="${index}" data-field="recurring" ${item.recurring ? 'checked' : ''} />
           <span class="recurring-toggle-text"><i class="fa-solid fa-rotate"></i> Récurrent</span>
+        </label>
+      ` : ''}
+      ${showDate ? `
+        <label>
+          <span>Date</span>
+          <input type="date" data-section="${sectionKey}" data-index="${index}" data-field="date" value="${item.date || ''}" />
         </label>
       ` : ''}
       <button type="button" class="danger-btn icon-btn" data-remove-section="${sectionKey}" data-index="${index}" aria-label="Supprimer la ligne">
@@ -393,7 +400,7 @@ function addDynamicLine(sectionKey) {
   dynamicSections[sectionKey].push(
     sectionKey === 'fixedCharges'
       ? { name: '', amount: 0, day: 1, recurring: false }
-      : { name: '', amount: 0 }
+      : { name: '', amount: 0, date: '' }
   );
   renderDynamicSection(sectionKey);
   saveFormData();
@@ -419,6 +426,10 @@ function updateDynamicLine(sectionKey, index, field, value) {
 
   if (field === 'recurring') {
     dynamicSections[sectionKey][index].recurring = value === true || value === 'true';
+  }
+
+  if (field === 'date') {
+    dynamicSections[sectionKey][index].date = value;
   }
 
   saveFormData();
