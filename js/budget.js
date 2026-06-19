@@ -509,13 +509,13 @@ function updateCheckingSummary() {
 }
 
 function saveCheckingBalance() {
-  localStorage.setItem(CHECKING_BALANCE_STORAGE_KEY, String(checkingBalance));
+  localStorage.setItem(CHECKING_BALANCE_STORAGE_KEY, String(Math.round(checkingBalance * 100) / 100));
 }
 
 function loadCheckingBalance() {
   const raw = localStorage.getItem(CHECKING_BALANCE_STORAGE_KEY);
-  checkingBalance = raw !== null ? (parseFloat(raw) || 0) : 0;
-  if (checkingBalanceInput) checkingBalanceInput.value = checkingBalance || '';
+  checkingBalance = raw !== null ? Math.round((parseFloat(raw) || 0) * 100) / 100 : 0;
+  if (checkingBalanceInput) checkingBalanceInput.value = checkingBalance !== 0 ? checkingBalance.toFixed(2) : '';
   updateCheckingSummary();
 }
 
