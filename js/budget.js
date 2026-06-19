@@ -45,23 +45,16 @@ function calculerRestant() {
   // Reste à vivre = revenus − obligations
   const remainingIncome = totalIncome - totalObligations;
 
-  const ccDynamic = totalIncome - totalObligations;
-  if (checkingBalanceInput) {
-    if (document.activeElement !== checkingBalanceInput) {
-      checkingBalanceInput.value = ccDynamic.toFixed(2);
-      checkingBalance = ccDynamic;
-      checkingBalanceInput.style.color = ccDynamic >= 0 ? '#34d399' : '#f87171';
-    }
-    saveCheckingBalance();
-  }
+  const startBalance = checkingBalance;
+  const ccDynamic = startBalance + totalIncome - totalObligations;
   const ccDetailEl = document.getElementById('checkingCalcDetail');
   if (ccDetailEl) {
     ccDetailEl.textContent =
-      `${formatCurrency(totalIncome)} (entrées) − ${formatCurrency(totalObligations)} (sorties)`;
+      `${formatCurrency(startBalance)} (départ) + ${formatCurrency(totalIncome)} (entrées) − ${formatCurrency(totalObligations)} (sorties)`;
   }
   const checkingProjectedEl = document.getElementById('checkingSummary');
   if (checkingProjectedEl) {
-    checkingProjectedEl.textContent = `Solde projeté : ${formatCurrency(ccDynamic)}`;
+    checkingProjectedEl.textContent = `Solde projeté fin de mois : ${formatCurrency(ccDynamic)}`;
     checkingProjectedEl.style.color = ccDynamic >= 0 ? '#34d399' : '#f87171';
   }
 
