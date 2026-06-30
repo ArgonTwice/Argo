@@ -28,6 +28,10 @@ function createChargesChart() {
             color: '#dbeafe',
             padding: 16,
             usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 8,
+            boxHeight: 8,
+            font: { size: 12 },
           },
         },
         tooltip: {
@@ -72,6 +76,11 @@ function createRemainingChart() {
         legend: {
           labels: {
             color: '#dbeafe',
+            usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 8,
+            boxHeight: 8,
+            font: { size: 12 },
           },
         },
       },
@@ -140,6 +149,11 @@ function createArchiveNetWorthChart() {
         legend: {
           labels: {
             color: '#dbeafe',
+            usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 8,
+            boxHeight: 8,
+            font: { size: 12 },
           },
         },
         tooltip: {
@@ -236,7 +250,7 @@ function createOrUpdateSixMonthChart() {
     },
     options: {
       responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{labels:{color:'#dbeafe'}}, tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${formatCurrency(Number(ctx.raw))}`}}},
+      plugins:{ legend:{labels:{color:'#dbeafe',usePointStyle:true,pointStyle:'circle',boxWidth:8,boxHeight:8,font:{size:12}}}, tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${formatCurrency(Number(ctx.raw))}`}}},
       scales:{ x:{ticks:{color:'#b7d8ff'},grid:{color:'rgba(56,189,248,0.08)'}}, y:{ticks:{color:'#b7d8ff'},grid:{color:'rgba(56,189,248,0.08)'}} }
     }
   });
@@ -367,7 +381,7 @@ function updateSalaryHistoryChart(sortedEntries) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#dbeafe', usePointStyle: true, pointStyle: 'circle', boxWidth: 8, boxHeight: 8 } } },
+      plugins: { legend: { labels: { color: '#dbeafe', usePointStyle: true, pointStyle: 'circle', boxWidth: 8, boxHeight: 8, font: { size: 12 } } } },
       scales: {
         x: { ticks: { color: '#b7d8ff' } },
         y: { ticks: { color: '#b7d8ff' } }

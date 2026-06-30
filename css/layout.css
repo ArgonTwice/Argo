@@ -80,19 +80,20 @@
 
 .global-control-bar {
   position: sticky;
-  top: 0.85rem;
-  z-index: 12;
+  top: 0;
+  z-index: 50;
   margin: 0.85rem 0 1.1rem;
-  padding: 0.85rem 0.95rem;
+  padding: 0.6rem 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.8rem;
   align-items: stretch;
-  background: rgba(30, 41, 59, 0.6);
-  border-bottom: 1px solid #3b82f6;
+  background: rgba(2, 6, 23, 0.97);
+  border-bottom: 1px solid rgba(59,130,246,0.15);
   border-radius: var(--radius-sm);
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.35);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .global-control-btn {
@@ -144,9 +145,17 @@
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-  align-items: stretch;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.dashboard-grid .panel {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-grid .panel:last-child {
+  margin-bottom: 0;
 }
 
 .panel {
@@ -189,16 +198,29 @@
 }
 
 .panel-heading h2 {
-  margin: 0;
-  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  margin: 0 0 0.3rem;
+  font-size: 1.15rem;
   letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .panel-heading p {
-  margin: 0.35rem 0 0;
+  margin: 0 0 1rem;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   line-height: 1.55;
+}
+
+.page-section > .panel,
+.page-section > section.panel {
+  margin-bottom: 1.5rem;
+}
+
+.page-section > .panel:last-child,
+.page-section > section.panel:last-child {
+  margin-bottom: 0;
 }
 
 .module-header h2 {
