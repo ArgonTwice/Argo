@@ -510,23 +510,69 @@ input[type="date"] {
   }
 }
 
+.salary-history-panel {
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.salary-history-panel .asset-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.salary-history-panel .asset-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.salary-history-panel .asset-table th,
+.salary-history-panel .asset-table td {
+  padding: 0.6rem 0.5rem;
+  font-size: 0.85rem;
+}
+
 .salary-history-form {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr auto;
   gap: 0.7rem;
   margin-bottom: 1.2rem;
+  width: 100%;
+}
+
+.salary-history-form input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .salary-history-chart-wrap {
-  height: 220px;
+  height: 200px;
+  max-height: 200px;
+  width: 100%;
+  position: relative;
   margin-bottom: 1.2rem;
+}
+
+.salary-history-chart-wrap canvas {
+  max-height: 200px !important;
+}
+
+@media (max-width: 1100px) {
+  .salary-history-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  .salary-history-form button {
+    grid-column: span 2;
+  }
 }
 
 @media (max-width: 768px) {
   .salary-history-form {
     grid-template-columns: 1fr 1fr;
   }
-  .salary-history-form button {
-    grid-column: span 2;
+  .salary-history-chart-wrap {
+    height: 180px;
+    max-height: 180px;
   }
 }
