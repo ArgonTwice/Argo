@@ -367,7 +367,7 @@ function updateSalaryHistoryChart(sortedEntries) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#dbeafe' } } },
+      plugins: { legend: { labels: { color: '#dbeafe', usePointStyle: true, pointStyle: 'circle', boxWidth: 8, boxHeight: 8 } } },
       scales: {
         x: { ticks: { color: '#b7d8ff' } },
         y: { ticks: { color: '#b7d8ff' } }

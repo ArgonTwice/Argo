@@ -544,6 +544,37 @@ input[type="date"] {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
+  background: rgba(15,23,42,0.72);
+  border: 1px solid rgba(148,163,184,0.22);
+  border-radius: 12px;
+  color: var(--text);
+  min-height: 52px;
+  font-size: 16px;
+  padding: 0.6rem 0.8rem;
+}
+
+.salary-history-form input::placeholder {
+  color: rgba(199,228,255,0.35);
+}
+
+.salary-history-form input:focus {
+  border-color: rgba(96,165,250,0.55);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.14);
+  background: rgba(15,23,42,0.88);
+}
+
+.salary-history-form input[type="date"] {
+  color-scheme: dark;
+}
+
+[data-theme="light"] .salary-history-form input {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+[data-theme="light"] .salary-history-form input[type="date"] {
+  color-scheme: light;
 }
 
 .salary-history-chart-wrap {
