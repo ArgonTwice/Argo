@@ -202,3 +202,20 @@ function showResetToast(sectionLabel) {
 function escapeHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+async function fetchWithCorsProxy(url, options = {}) {
+  try {
+    const response = await fetch(url, options);
+    if (response.ok) return response;
+    throw new Error(`HTTP ${response.status}`);
+  } catch (directError) {
+    try {
+      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+      const proxyResponse = await fetch(proxyUrl, options);
+      if (proxyResponse.ok) return proxyResponse;
+      throw new Error(`Proxy HTTP ${proxyResponse.status}`);
+    } catch (proxyError) {
+      throw new Error('CoinGecko inaccessible (direct + proxy échoués)');
+    }
+  }
+}

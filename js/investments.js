@@ -918,7 +918,7 @@ async function fetchCryptoPrices() {
   try {
     // /coins/markets donne prix + variation 24h en un seul appel
     const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=${ids.join(',')}&order=market_cap_desc&per_page=250&sparkline=false`;
-    const response = await fetch(url, { signal: controller.signal });
+    const response = await fetchWithCorsProxy(url, { signal: controller.signal });
 
     if (!response.ok) throw new Error(`Erreur API CoinGecko (${response.status})`);
 
@@ -953,9 +953,11 @@ async function fetchCryptoPrices() {
     cryptoAssets = cryptoAssets.map((asset) => ({ ...asset }));
     updateCryptoValues();
 
-    const msg = error.name === 'AbortError'
-      ? 'Délai dépassé — cours indisponible. Saisissez-le manuellement.'
-      : `Impossible de récupérer les cours (${error.message}).`;
+    const msg = error.message.includes('CORS') || error.message.includes('inaccessible')
+      ? 'API crypto temporairement inaccessible. Réessayez dans quelques minutes.'
+      : error.name === 'AbortError'
+        ? 'Délai dépassé — cours indisponible.'
+        : 'Impossible de récupérer les cours.';
     if (cryptoSyncStatusEl) cryptoSyncStatusEl.textContent = msg;
     showToast(msg, 'warning');
   } finally {
@@ -979,7 +981,10 @@ async function fetchCoinsList() {
   try {
     const controller = new AbortController();
     const tid = window.setTimeout(() => controller.abort(), 15000);
-    const response = await fetch('https://api.coingecko.com/api/v3/coins/list', { signal: controller.signal });
+    const response = await fetchWithCorsProxy(
+      'https://api.coingecko.com/api/v3/coins/list',
+      { signal: controller.signal }
+    );
     window.clearTimeout(tid);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     coinsList = await response.json();
