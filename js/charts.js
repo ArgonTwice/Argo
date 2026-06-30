@@ -334,3 +334,44 @@ function updateBudgetDonutChart() {
     plugins: [barLabelPlugin]
   });
 }
+
+let salaryHistoryChart = null;
+
+function updateSalaryHistoryChart(sortedEntries) {
+  const canvas = document.getElementById('salaryHistoryChart');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const labels = sortedEntries.map(e => formatMonthLabel(e.month));
+  const totals = sortedEntries.map(e => e.salary + e.bonus);
+
+  if (salaryHistoryChart) {
+    salaryHistoryChart.data.labels = labels;
+    salaryHistoryChart.data.datasets[0].data = totals;
+    salaryHistoryChart.update();
+    return;
+  }
+
+  salaryHistoryChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Revenu total',
+        data: totals,
+        borderColor: '#00d4ff',
+        backgroundColor: 'rgba(0,212,255,0.1)',
+        fill: true,
+        tension: 0.3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#dbeafe' } } },
+      scales: {
+        x: { ticks: { color: '#b7d8ff' } },
+        y: { ticks: { color: '#b7d8ff' } }
+      }
+    }
+  });
+}

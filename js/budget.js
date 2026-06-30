@@ -662,3 +662,75 @@ function updateUpcomingCharges() {
     </div>`;
   }).join('');
 }
+
+function formatMonthLabel(monthStr) {
+  const [year, month] = monthStr.split('-');
+  return new Date(year, month - 1).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+}
+
+function addSalaryEntry() {
+  const month = document.getElementById('salaryHistoryMonth')?.value;
+  const salary = parseAmount(document.getElementById('salaryHistorySalary')?.value);
+  const bonus = parseAmount(document.getElementById('salaryHistoryBonus')?.value);
+  if (!month || salary <= 0) return;
+
+  const entry = { month, salary, bonus, date: new Date().toISOString() };
+  const existing = salaryHistory.findIndex(e => e.month === month);
+  if (existing >= 0) {
+    salaryHistory[existing] = entry;
+  } else {
+    salaryHistory.push(entry);
+  }
+
+  saveSalaryHistory();
+  renderSalaryHistory();
+  showToast('Salaire enregistré.');
+}
+
+function removeSalaryEntry(month) {
+  salaryHistory = salaryHistory.filter(e => e.month !== month);
+  saveSalaryHistory();
+  renderSalaryHistory();
+}
+
+function renderSalaryHistory() {
+  const tbody = document.getElementById('salaryHistoryTableBody');
+  if (!tbody) return;
+
+  const sorted = [...salaryHistory].sort((a, b) => a.month.localeCompare(b.month));
+
+  if (!sorted.length) {
+    tbody.innerHTML = '<tr><td colspan="6">Aucun historique.</td></tr>';
+  } else {
+    tbody.innerHTML = sorted.map((entry, i) => {
+      const total = entry.salary + entry.bonus;
+      const prev = sorted[i - 1];
+      const evolution = prev ? total - (prev.salary + prev.bonus) : null;
+      const evoText = evolution === null ? '—' : `${evolution >= 0 ? '+' : ''}${formatCurrency(evolution)}`;
+      const evoColor = evolution > 0 ? '#34d399' : evolution < 0 ? '#f87171' : 'var(--muted)';
+
+      return `<tr>
+        <td>${formatMonthLabel(entry.month)}</td>
+        <td>${formatCurrency(entry.salary)}</td>
+        <td>${formatCurrency(entry.bonus)}</td>
+        <td><strong>${formatCurrency(total)}</strong></td>
+        <td style="color:${evoColor}">${evoText}</td>
+        <td>
+          <button class="danger-btn icon-btn" data-remove-salary="${entry.month}">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  tbody.querySelectorAll('[data-remove-salary]').forEach(btn => {
+    btn.addEventListener('click', () => removeSalaryEntry(btn.dataset.removeSalary));
+  });
+
+  updateSalaryHistoryChart(sorted);
+}
+
+function bindSalaryHistory() {
+  document.getElementById('addSalaryHistoryBtn')?.addEventListener('click', addSalaryEntry);
+}

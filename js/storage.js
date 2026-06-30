@@ -500,6 +500,16 @@ function handleBackupImportInput(event) {
   event.target.value = '';
 }
 
+function loadSalaryHistory() {
+  try {
+    salaryHistory = JSON.parse(localStorage.getItem(SALARY_HISTORY_KEY)) || [];
+  } catch { salaryHistory = []; }
+}
+
+function saveSalaryHistory() {
+  localStorage.setItem(SALARY_HISTORY_KEY, JSON.stringify(salaryHistory));
+}
+
 function bindBackupControls() {
   const exportBackupButton = document.getElementById('exportBackupButton');
   const importBackupButton = document.getElementById('importBackupButton');

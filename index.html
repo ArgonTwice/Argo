@@ -302,6 +302,43 @@
 
             </section>
 
+            <section class="panel salary-history-panel">
+              <div class="panel-heading">
+                <h2><i class="fa-solid fa-money-bill-trend-up"></i> Historique salaire</h2>
+                <p>Enregistrez votre salaire mensuel pour comparer son évolution.</p>
+              </div>
+
+              <div class="salary-history-form">
+                <input type="month" id="salaryHistoryMonth" />
+                <input type="number" id="salaryHistorySalary"
+                  placeholder="Salaire (€)" step="0.01" inputmode="decimal" />
+                <input type="number" id="salaryHistoryBonus"
+                  placeholder="Prime (€)" step="0.01" inputmode="decimal" />
+                <button type="button" id="addSalaryHistoryBtn"
+                  class="action-btn">+ Enregistrer</button>
+              </div>
+
+              <div class="salary-history-chart-wrap">
+                <canvas id="salaryHistoryChart"></canvas>
+              </div>
+
+              <div class="asset-table-wrap">
+                <table class="asset-table">
+                  <thead>
+                    <tr>
+                      <th>Mois</th>
+                      <th>Salaire</th>
+                      <th>Prime</th>
+                      <th>Total</th>
+                      <th>Évolution</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="salaryHistoryTableBody"></tbody>
+                </table>
+              </div>
+            </section>
+
             <section class="panel results-panel">
               <div class="panel-heading results-panel-header">
                 <div>

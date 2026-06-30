@@ -90,6 +90,7 @@ const MANUAL_TRANSFER_KEY = 'dashboard-financier-manual-transfer';
 const TRANSFER_PRESET_KEY  = 'dashboard-financier-transfer-preset';
 const PONCTUELS_STORAGE_KEY = 'dashboard-financier-ponctuels';
 const CHECKING_BALANCE_STORAGE_KEY = 'dashboard-financier-checking';
+const SALARY_HISTORY_KEY = 'dashboard-financier-salary-history';
 
 const DEFAULT_CRYPTOS = [
   { symbol: 'bitcoin', quantity: 0, buyPrice: 0, currentPrice: null, priceSource: 'none' },
@@ -159,6 +160,7 @@ let coinsList = [];
 let cryptoAutoRefreshInterval = null;
 let cryptoCountdownTimer = null;
 let cryptoCountdownValue = 0;
+let salaryHistory = [];
 
 function parseAmount(value) {
   const numericValue = Number(value);

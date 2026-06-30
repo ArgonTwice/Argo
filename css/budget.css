@@ -509,3 +509,24 @@ input[type="date"] {
     min-height: 52px !important;
   }
 }
+
+.salary-history-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+}
+
+.salary-history-chart-wrap {
+  height: 220px;
+  margin-bottom: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .salary-history-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  .salary-history-form button {
+    grid-column: span 2;
+  }
+}

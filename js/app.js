@@ -1,5 +1,6 @@
 function initializeApp() {
   loadSavedData();
+  loadSalaryHistory();
   loadArchives();
   createChargesChart();
   createRemainingChart();
@@ -18,6 +19,8 @@ function initializeApp() {
   renderBankAccountsTable();
   updateDashboard();
   updateMortgageTable();
+  bindSalaryHistory();
+  renderSalaryHistory();
   renderCryptoTable();
   fetchCryptoPrices().then(() => startCryptoAutoRefresh());
   fetchCoinsList();
